@@ -1,0 +1,3078 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{Pittsburgh}      % or try Singapore, boxes, Darmstadt,
+  % Montpellier, Madrid, Warsaw, Pittsburgh...
+  \usecolortheme{seahorse} % or try albatross, beaver, crane, ...
+  \usefonttheme{structurebold}  % or try serif, professionalfonts,
+ % structurebold, structureitalicserif, ...
+
+  \setbeamertemplate{frametitle}[default][left]
+%   \setbeamerfont{section in head/foot}{family=\ttfamily} % or try sffamily,
+  % \rmfamily, \ttfamily
+%   \setbeamertemplate{navigation symbols}{}
+
+%     \setbeamerfont{title}{series=\bfseries,parent=structure}
+%     \setbeamerfont{subtitle}{size=\scriptsize,series=\bfseries,parent=structure}
+%     \setbeamerfont{author}{size=\scriptsize,series=\bfseries,parent=structure}
+%     \setbeamerfont{institute}{size=\scriptsize,series=\bfseries,parent=structure}
+%     \setbeamerfont{date}{size=\scriptsize,series=\bfseries,parent=structure}
+% 	\setbeamerfont{body}{family=\ttfamily}
+
+  \usenavigationsymbolstemplate{}
+  \setbeamertemplate{caption}[numbered]
+  \setbeamercolor{itemize item}{fg = red!60!black}
+  \setbeamertemplate{footline}[frame number]
+
+%   \setbeamertemplate{headline}{\initclock\tiny{\tdhours:\tdminutes}}
+
+  \setbeamertemplate{itemize items}{$\triangleright$} % \triangleright, \square
+  % \circ
+}
+
+\usepackage{CJK}
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{setspace}
+\usepackage{textcomp}  % for TM (trademark) symbol
+\usepackage[all]{xy} % for \xymatrix
+
+%%%%%%%%%%%%%% for appendix %%%%%%%%%%%%%%%%
+% http://www-ljk.imag.fr/membres/Jerome.Lelong/latex/appendixnumberbeamer.sty
+% Reference: http://tex.stackexchange.com/questions/2541/beamer-frame-numbering-in-appendix
+\usepackage{appendixnumberbeamer}
+% Add total frame count to slides, optional. From Stefan,
+% http://www.latex-community.org/forum/viewtopic.php?f=4&t=2173
+\expandafter\def\expandafter\insertshorttitle\expandafter{%
+  \insertshorttitle\hfill\insertframenumber\,/\,\inserttotalframenumber}
+%%%%%%%%%%%%%% for appendix %%%%%%%%%%%%%%%%
+
+% \usepackage[dvipsnames]{xcolor}
+
+\usepackage{subcaption} % for subfigure
+\captionsetup{compatibility=false}
+\usepackage[caption=false]{subfig}
+
+\usepackage[absolute,overlay]{textpos}
+
+\usepackage{pbox}
+
+% for symbols and formulae
+\usepackage{mathtools}
+\usepackage{amssymb}
+\usepackage{bbding}
+
+\usepackage{array} % for table environment
+\newcommand{\innercell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\usepackage{colortbl} % row color/column color for tables
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+
+\usepackage{verbatim} % for ``multi-line comment''
+
+\usepackage{mdframed}
+% \usepackage{tablefootnote}
+
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{color}
+\usetikzlibrary{positioning, scopes, shapes, arrows, calc, arrows.meta}
+\usepackage{standalone}
+
+\usepackage[font=Helv,timeinterval=60]{tdclock}
+%%%%%%%%% changing spacing for main text body %%%%%%%%%%%%%%%%
+% ref: http://tex.stackexchange.com/q/30042/23098
+\let\oldframetitle\frametitle  % Store old \frametitle in \oldframetitle
+% Redefine \frametitle
+\renewcommand{\frametitle}[1]{\oldframetitle{#1}\setstretch{1.2}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% for cite: #1: author; #2: conference #3: year
+\newcommand{\citeinbeamer}[3]{{\scriptsize{\textcolor{blue}{[#1@#2'#3]}}}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% for fig without caption: #1: width/size; #2: fig file
+\newcommand{\fignocaption}[2]
+{
+  \begin{figure}[htp]
+    \centering
+      \includegraphics[#1]{#2}
+  \end{figure}
+}
+
+% for fig without caption: #1: width/size; #2: fig file; #3: fig caption
+\newcommand{\fig}[3]
+{
+  \begin{figure}[htp]
+    \centering
+      \includegraphics[#1]{#2}
+      \caption[labelInTOC]{#3}
+  \end{figure}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% special numbering for backup slides
+\newcommand{\backupbegin}
+{
+   \newcounter{framenumbervorappendix}
+   \setcounter{framenumbervorappendix}{\value{framenumber}}
+}
+\newcommand{\backupend}
+{
+   \addtocounter{framenumbervorappendix}{-\value{framenumber}}
+   \addtocounter{framenumber}{\value{framenumbervorappendix}}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% new commands for task, todolist
+\newcommand{\todo}[1]{\textcolor{blue}{(TODO: #1)}}
+\newcommand{\todocenter}[1]{\begin{center}  \textcolor{blue}{(TODO:
+#1)} \end{center}}
+\newcommand{\fixme}[1]{\textcolor{red}{(FIXME: #1)}}
+\newcommand{\addref}[1]{\textcolor{green}{(REF: #1)}}
+\newcommand{\question}[1]{\textcolor{red}{(QUES: #1)}}
+
+% new commands for fonts
+\newcommand{\purple}[1]{\textcolor{purple}{#1}}
+\newcommand{\largepurple}[1]{\textcolor{purple}{\large #1}}
+\newcommand{\Largepurple}[1]{\textcolor{purple}{\Large #1}}
+\newcommand{\largeempurple}[1]{\emph{\textcolor{purple}{\large #1}}}
+
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\largeblue}[1]{\textcolor{blue}{\large #1}}
+\newcommand{\Largeblue}[1]{\textcolor{blue}{\Large #1}}
+\newcommand{\largeemblue}[1]{\emph{\textcolor{blue}{\large #1}}}
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\largered}[1]{\textcolor{red}{\large #1}}
+\newcommand{\Largered}[1]{\textcolor{red}{\Large #1}}
+\newcommand{\largeemred}[1]{\emph{\textcolor{red}{\large #1}}}
+
+\newcommand{\boxedpoint}[1]{
+  \begin{center}
+    \fbox{\textcolor{red}{\bf #1}}
+  \end{center}
+}
+
+\newcommand{\boxedpointblue}[1]{
+  \begin{center}
+    \fbox{\textcolor{blue}{\bf #1}}
+  \end{center}
+}
+
+\newcommand{\blockblue}[1]{\textcolor{blue}{\bf #1}}
+\newcommand{\blockred}[1]{\textcolor{red}{\bf #1}}
+
+\newcommand{\timestamp}[1]{\emph{\sffamily #1}}
+
+% new commands for maths
+\newcommand{\set}[1]{$\{ #1 \}$}
+\newcommand{\setinmath}[1]{\{ #1 \}}
+
+% fonts for different contexts
+\newcommand{\setfont}[1]{$\mathcal{#1}$}
+\newcommand{\setfontinmath}[1]{\mathcal{#1}}
+
+\title[]{Consistency Models in Distributed Shared Memory: Theory and Practice}
+\author{Hengfeng Wei}
+\institute{ICS, NJU \\ hengxin0912@gmail.com}
+% \date{March 4, 2015 $\sim$ \today}
+\date{\today}
+
+\AtBeginSection[]
+{
+	\begin{frame}[noframenumbering, plain]%<beamer>
+		\frametitle{Consistency Models in DSM: Theory and Practice}
+		\tableofcontents[currentsection, sectionstyle=show/show, hideallsubsections,
+		subsubsectionstyle=hide]
+	\end{frame}
+}
+
+% Delete this, if you do not want the table of contents to pop up at
+% the beginning of each subsection:
+\AtBeginSubsection[]
+{
+	\begin{frame}[noframenumbering, plain] %<beamer>
+		\frametitle{Consistency Models in DSM: Theory and Practice}
+		\tableofcontents[
+			currentsection,
+			sectionstyle=show/show,
+  			subsectionstyle=show/shaded/hide,
+  			subsubsectionstyle=hide
+  			]
+	\end{frame}
+}
+%%%%%%%%%%%%%%%%
+\begin{document}
+
+% \begin{CJK*}{GBK}{song}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+% \begin{frame}{Outline}
+%  \tableofcontents[currentsection, sectionstyle=show/show, hideallsubsections]
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+%%%%%%%%%%%
+\subsection{Background: Distributed Shared Memory}
+
+\begin{frame}{Distributed shared memory}
+  \begin{definition}[Distributed shared memory (DSM)
+    \citeinbeamer{Attiya}{Wiley}{04}]
+    \begin{itemize}
+      \item A \largeblue{model} for inter-process communication
+      \item An illusion of \largeblue{shared memory} on top of
+      \largeblue{message passing}
+    \end{itemize}
+  \end{definition}
+
+  \fig{width = 0.65\textwidth}{fig/dsm-model.pdf}{A distributed
+  shared memory on top of a message passing system.}
+%   \begin{quote}
+%     \textcolor{purple}{Distributed shared memory (DSM)} is a
+%     \textcolor{blue}{\Large model} for interprocess communication that provides
+%     the illusion of a \textcolor{blue}{\Large shared memory} on top of a
+%     \textcolor{blue}{\Large message passing system}.
+%
+%     \hfill --- \citeinbeamer{Attiya}{Wiley}{04}
+%   \end{quote}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Distributed shared memory}
+  \fig{width = 0.85\textwidth}{fig/dsm-model.pdf}{A distributed shared memory on
+  top of a message passing system.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Benefits of DSM}
+  \begin{block}{A more global view of asynchronous distributed
+  system:}
+  \begin{itemize}
+    \item familiar programming model for programmer
+      \begin{itemize}
+        \item \texttt{read/write} vs. \texttt{send/receive}
+      \end{itemize}
+    \item simple computational model for theoretician
+      \begin{itemize}
+        \item e.g., distributed recursion
+      \end{itemize}
+  \end{itemize}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{DSM in practice}
+  \fig{width = 0.80\textwidth}{fig/dsss.pdf}{Distributed storage systems
+    {\scriptsize (\textcolor{blue}{open source [left]} \&
+    \textcolor{red}{commercial [right]})}.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{DSM in practice}
+  \fig{width = 0.618\textwidth}{fig/distributed_storage_system_arch.pdf}
+  {Architecture (simplified) of distributed storage systems.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Distributed shared memory vs. distributed storage systems}
+  \begin{block}{Distributed shared memory \fbox{vs.} distributed storage
+  systems:}
+    In distributed shared memory,
+    \[
+      \textrm{Processes communicate via distributed shared variables.}
+    \]
+
+    In distributed storage systems,
+    \[
+      \textrm{Users access geographically replicated data.}
+    \]
+  \end{block}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Distributed shared memory issues}
+  \begin{exampleblock}{When a process \texttt{invokes} a dsm
+  operation (\texttt{read/write}):}
+    \begin{enumerate}
+      \item executes local computations
+      \item exchanges messages with others
+      \item \texttt{responds} to the process
+    \end{enumerate}
+  \end{exampleblock}
+
+  \begin{center}
+    \fbox{\textcolor{red}{\bf DSM operations are {\it NOT} instantaneous!}}
+  \end{center}
+
+  \begin{block}{No problem if there is only one process:}
+	  \fig{width = 0.85\textwidth}{fig/sequential-specification.pdf}
+	  {Sequential \blue{\texttt{read} semantics}: \texttt{read} reads the
+	  latest \texttt{write}.}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Distributed shared memory issues}
+  \begin{exampleblock}{When multiple processes \texttt{invoke} operations
+  concurrently:}
+    \fignocaption{width = 0.55\textwidth}{fig/concurrent-what-value.pdf}
+  \end{exampleblock}
+
+  \begin{block}{The Question:}
+    What value(s) should be returned by a \texttt{read} that overlaps
+    \texttt{writes}?
+  \end{block}
+
+  \begin{block}{The Answer:}
+    Defined by memory \largepurple{consistency models}.
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Consistency models of DSM}
+  \begin{definition}[Consistency model \citeinbeamer{Steinke}{JACM}{04}]
+    A consistency model for dsm:
+    \begin{itemize}
+      \item specifies the values may be returned by \texttt{\it reads}
+        \begin{itemize}
+          \item even though operations are only partially ordered
+        \end{itemize}
+    \end{itemize}
+  \end{definition}
+
+
+  \boxedpointblue{that is, specification of the allowable behavior of dsm.}
+  \boxedpoint{thereby defining the semantics of shared registers/variables.}
+
+%   \begin{mdframed}[align = center, linecolor = blue]
+%     {\small (1) consistency model for dsm $\iff$ (2) specification of dsm $\iff$
+%     (3) semantics of registers}
+%   \end{mdframed}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Benefits of consistency models}
+  \begin{block}{A {\it Consistency Model} is a contract between dsm and users}
+    \fig{width = 0.55\textwidth}{fig/consistency-model-contract.pdf}
+    {Consistency model between dsm and users.}
+%     	\fignocaption{width = 0.40\textwidth}{fig/contract-logo.jpg}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+%%%%%%%%%%%
+\subsection{Contents and Scope}
+
+\begin{frame}{Consistency models in DSM}
+  \fig{width = 0.90\textwidth}{fig/survey-contents.pdf}{Contents of the survey
+  on consistency models in dsm.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Theory of consistency models (Section 3)}
+%   \fignocaption{width = 0.70\textwidth}{fig/theory-of.pdf}
+%   \fig{width =
+%   0.80\textwidth}{fig/theory-of-consistency-models.png}{Specification,
+%   computability, and maintenance in the theory of consistency models.}
+
+  \fig{width = 0.75\textwidth}{fig/theory-of-consistency-models.pdf}
+  {Specification, computability, and maintenance in the theory of consistency
+  models.}
+
+%   \begin{enumerate}
+%     \item \largeblue{specifications} and framework of specifications
+%     \item \largeblue{computability} power and limitations
+%     \item \largeblue{maintenance} including impossibility results and lower
+%     bounds
+%   \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Practice of consistency models (Section 4)}
+  \begin{block}{Practice of consistency models in \largepurple{distributed
+  storage systems} {\small (both commercial and open-source)}:
+    \largeblue{Trade-offs everywhere,}}
+    \begin{enumerate}
+      \item trade-offs from the perspective of \largeblue{consistency}
+ 	  \item \largeblue{design elements} from the perspective of consistency
+    \end{enumerate}
+  \end{block}
+
+	% \usepackage{multirow}
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{\blue{\textbf{\large Consistency models}}} &
+	\multicolumn{3}{c|}{\blue{\textbf{\large Design elements}}} \\ \cline{2-4} &
+	\textbf{Topology} & \textbf{Concurrency control} & \textbf{Ordering policy} \\ \hline Weak consistency models &  &  &  \\ \hline
+	Strong consistency models &  &  &  \\ \hline
+	Hybrid consistency models 	\footnote[frame]{\hyperlink{hybrid-consistency-backup}{\beamerbutton{Go to
+	Backup Slides for Hybrid Consistency Models}}}
+	 &  &  &  \\ \hline
+	\end{tabular}
+	}
+	\caption{Explore design elements from the perspective of weak, strong, and
+	hybrid consistency models in distributed storage systems.}
+  \end{table}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage{graphicx}
+%   \begin{table}[h]
+% 	\centering
+% 	\resizebox{\textwidth}{!}{%
+% 	\begin{tabular}{@{}|c||c|c|c|c|@{}}
+% 	\toprule
+% 	\multirow{3}{*}{\textcolor{blue}{\Large{\bf Consistency models}}} &
+% 	\multicolumn{4}{c|}{\textcolor{blue}{\Large{\bf Design elements}}}
+% 	\\
+% 	\cmidrule(l){2-5} & \multirow{2}{*}{\bf Topology} &
+% 	\multirow{2}{*}{\bf Concurrency control} & \multicolumn{2}{c|}{\bf Ordering
+% 	policy}
+% 	\\ \cmidrule(l){4-5} &   &    & {\sf Ordering establishment} & {\sf Conflict
+% 	resolution}
+% 	\\ \midrule \midrule
+% 	Weak consistency models 	&     &   &   &   \\ \midrule
+% 	Strong consistency models   &    &     &     &    \\ \midrule
+% 	Hybrid consistency models   &    &     &     &     \\ \bottomrule
+% 	\end{tabular}
+% 	}
+% 	\caption{Explore design elements from the perspective of weak, strong, and
+% 	hybrid consistency models in distributed storage systems.}
+%   \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Gap between theory and practice (Section 5)}
+
+  \fig{width = 0.70\textwidth}{fig/gap-sla.pdf}
+  {Gap between theory and practice of consistency models.}
+%   \begin{quote}
+%     In theory, there is no difference between theory and practice. But, in
+%     practice, there is.
+%   \end{quote}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{In scope}
+  \begin{figure}
+    \includestandalone[width = 0.65\textwidth]{tikz/survey-scope-overlay}
+    \caption{The three-dimensional space of possible perspectives on
+    consistency models.}
+  \end{figure}
+% static membership vs. dynamic membership
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Out of scope}
+  Consistency models in \largepurple{``shared memory multiprocessors''} which
+  may be subject to \citeinbeamer{Adve}{IEEE Computer}{96},
+  \citeinbeamer{Adve}{CACM}{10}
+
+  \begin{itemize}
+	\item computer architectures (\texttt{e.g., write buffer})
+    \item compiler optimizations (\texttt{e.g., reordering})
+    \item programming languages (\texttt{Java\textsuperscript{TM}}
+    \citeinbeamer{Manson}{POPL}{05}, \texttt{C++}
+    \citeinbeamer{Boehm}{PODI}{08})
+  \end{itemize}
+
+  \vspace{0.30cm}
+
+  \boxedpoint{The principles are similar, but the details differ a lot !}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{System Model}
+
+%%%%%%%%%%%%%
+\begin{frame}{Two layers system model}
+  \fig{width = 0.75\textwidth}{fig/system-model-two-layers.pdf}
+  {Two layers system model: specification and maintenance.}
+
+%   \boxedpoint{We will see ``execution'' over and over again.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{System model at the specification layer}
+  \begin{block}{System model at the specification layer}
+    \begin{itemize}
+      \item a set of \largeblue{processes}: $\setfontinmath{P} = \setinmath{P_1,
+      P_2, \cdots, P_n}$
+      \item a set of (distributed) shared \largeblue{registers}:
+      $\setfontinmath{X} = \setinmath{x, y, z, \cdots}$
+      \item \largeblue{operations} $\setfontinmath{O} =
+      \setinmath{\texttt{read(x), write(x,v)}}$
+    \end{itemize}
+  \end{block}
+
+  \boxedpoint{Processes communicate via accessing the shared registers.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Operations}
+  \begin{center}
+    An \largepurple{operation} is an \largeblue{interval} indicated by two
+    \largeblue{events}:
+
+    an \texttt{invocation} followed by a \texttt{response}.
+  \end{center}
+
+  \fignocaption{width = 0.85\textwidth}{fig/operation.pdf}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Executions}
+  An \largepurple{execution} is a collection of \largeblue{operation sequences},
+  one per process.
+
+  \fignocaption{width = 0.618\textwidth}{fig/execution.pdf}
+
+%   \vspace{0.10cm}
+
+%   \boxedpoint{Program order for each individual process.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Time in executions}
+
+  We assume an \largepurple{imaginary} global clock (called
+  \largepurple{``real-time''}) \citeinbeamer{Lamport}{DC}{86}:
+  \begin{itemize}
+    \item each \texttt{invocation/response} has its time
+    \item only for specification
+    \item \largeblue{NOT} available to maintenance
+  \end{itemize}
+
+%   \begin{textblock}{5}[0.5,0.5](10,12)
+    \fig{width = 0.30\textwidth}{fig/world-clock-wall.jpg}
+    {Imaginary global clock.}
+%     {Please read the time as \textcolor{blue}{\Large \tdhours.\tdminutes}.}
+%   \end{textblock}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Time in executions}
+  \begin{block}{Another view of execution}
+    An \largeblue{execution} is a sequence of events, in chronological order
+  according to \largepurple{``real-time''}.
+  \end{block}
+
+  \fig{width = 0.65\textwidth}{fig/execution-to-real-time.pdf}
+  {Mapping all events in an execution to ``real-time'' line.}
+
+  \begin{alertblock}{The ``real-time'' exists but is not available for
+  maintenance.}
+  \end{alertblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{System model at the maintenance layer}
+  \fig{width = 0.50\textwidth}{fig/system-model-maintenance.pdf}
+  {System model at the maintenance layer (in message passing).}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{System model at the maintenance layer}
+  \begin{block}{For maintenance, we assume an \largepurple{asynchronous message
+  passing system}:}
+    \begin{itemize}
+      \item no global clock
+      \item no bound on message delay
+      \item no bound on the speed of a process
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Two uncertainties:}
+    \begin{itemize}
+      \item cannot tell whether a message is delayed or lost
+      \item cannot tell whether a process is slow or failed
+    \end{itemize}
+  \end{block}
+
+%   \boxedpoint{Characterized by partial knowledge and uncertainty.}
+\end{frame}
+%%%%%%%%%%%%%
+% \begin{frame}{Execution as a key concept in consistency models}
+%   \begin{alertblock}{Execution as a key concept:}
+%     \begin{description}
+%       \item[Specification:] determines which executions are ``legal''
+%       \item[Maintenance:] only produces such ``legal'' executions
+%     \end{description}
+%   \end{alertblock}
+% \end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Theory of Consistency Models}
+
+%%%%%%%%%%%
+% \subsection{Overview of Theory of Consistency Models}
+\begin{comment}
+\begin{frame}{Overview of theory of consistency models}
+  \fig{width = 0.85\textwidth}{fig/theory-example.pdf}{Specification,
+  computability, and maintenance in the theory of consistency models.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%
+\subsection{Specifications of Consistency Models}
+
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Specification}
+  \begin{block}{\textcolor{red}{\bf Recall:} Consistency model specifies the
+  values may be returned by \texttt{reads} in an execution:}
+  \begin{displaymath}
+    \begin{split}
+      \textrm{Specification } \mathcal{S} &\triangleq  \setinmath{\textrm{all
+      \largeblue{legal} executions}}
+      \quad \textrm{\citeinbeamer{Steinke}{JACM}{04}}
+      \\
+      \\
+      \textrm{\largeblue{legal}} &\triangleq \setinmath{\textrm{constraints on
+      executions}}
+    \end{split}
+  \end{displaymath}
+  \end{block}
+
+  \boxedpoint{thereby defining the semantics of \texttt{read/write} registers.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Specification of consistency models}
+  \begin{alertblock}{The Basic Question:}
+    What value(s) may be returned by a \texttt{read} in an execution?
+    \begin{description}
+      \item[Challenge:] processes interleave $\Rightarrow$ partial order of
+      operations
+    \end{description}
+  \end{alertblock}
+
+
+  \begin{center}
+    \textcolor{blue}{\fbox{\bf
+    $
+      \textrm{different specifications}
+      \xrightleftharpoons[\textrm{define}]{\,\textrm{specify}\,}
+      \textrm{different partial orders}
+    $
+    }}
+%     \textcolor{blue}{\fbox{\bf The Answer: It depends on the specification.}}
+  \end{center}
+
+  \pause
+  \begin{block}{Whether an execution conforms to some specification:}
+    It should \emph{behave like} a \largeblue{sequential} execution:
+    \begin{enumerate}
+      \item sequential: total order + \texttt{read} semantics
+      \item partial order $\xRightarrow{\texttt{linearized}}$ multiple total orders
+      \item {\textcolor{red}{$\mathbf{\exists}$}} a total order: \texttt{read}
+      reads from the latest \texttt{write}
+    \end{enumerate}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Specification: safety + progress}
+  A \largepurple{specification} consists of \citeinbeamer{Lamport}{TSE}{77}
+  \begin{enumerate}
+    \item \largeblue{Safety:} to ensure correctness $\qquad$
+    \fbox{\textcolor{red}{\bf our focus !}}
+      \begin{itemize}
+        \item on execution: keeping correct continuously
+      \end{itemize}
+    \item \largeblue{Progress:} to ensure termination
+      \begin{itemize}
+        \item on execution: making progress eventually (or repeatedly)
+      \end{itemize}
+  \end{enumerate}
+
+  \begin{columns}
+    \column{0.50\textwidth}
+      \fig{width = 0.75\textwidth}{fig/safety-first.png}{Safety: something bad
+      will not happen.}
+    \column{0.50\textwidth}
+      \fig{width = 0.45\textwidth}{fig/making-progress.jpg}{Progress: something
+      good must happen.}
+  \end{columns}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Safety: correctness of DSM}
+  \boxedpoint{Safety: constraints on \largeblue{partial orders} of operations}
+
+  \begin{block}{Which partial orders?}
+    $
+      \textrm{different specifications}
+      \xrightleftharpoons[\textrm{define}]{\,\textrm{specify}\,}
+      \textrm{different partial orders}
+    $
+  \end{block}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Real-time order}
+%   \fig{width = 0.85\textwidth}{fig/consistency-models-real-time.png}{Classifying
+%   consistency models by respecting the \largepurple{\emph{real-time order}} or
+%   not.}
+
+  \fig{width = 0.75\textwidth}{fig/consistency-model-with-without-real-time.pdf}
+  {Classifying consistency models by respecting the \largepurple{\emph{real-time
+  order}} or not.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Real-time order}
+  \fignocaption{width = 0.618\textwidth}{fig/real-time-order.pdf}
+
+  \begin{definition}[Precedes relation `$\prec$' and overlaps relation
+  `$\parallel$']
+    $o_1 \prec o_2 \iff o_1.\textrm{response} <_{t} o_2.\textrm{invocation}$
+
+    $o_1 \parallel o_2 \iff \lnot(o_1 \prec o_2 \lor o_2 \prec o_1)$
+  \end{definition}
+
+  \begin{definition}[Real-time order]
+    Precedence defines a partial order --- the real-time order.
+  \end{definition}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = consistency-model-with-main]{Consistency models with
+real-time order}
+  \begin{table}
+	\begin{tabular}{|c|c|c|}
+	  \hline
+	  \bfseries Consistency models &
+	  \bfseries Value for \texttt{read} \footnote[frame]{We can
+	  focus on only the \texttt{reads} overlapping \texttt{writes}.} &
+	  \bfseries The reference \\ \hline \hline
+	  Atomicity
+	  \footnote[frame]{\hyperlink{atomicity-example-backup}{\beamerbutton{Go
+	  to Backup Slides for Atomicity as An Example}}}
+	  & latest & \citeinbeamer{Lamport}{JACM}{86} \\ \hline
+	  Regularity {\scriptsize (\texttt{single-writer})} & latest $\lor$ concurrent
+	  & \citeinbeamer{Lamport}{DC}{86}
+	  \\ \hline
+	  Safe {\scriptsize (\texttt{single-writer})} & arbitrary &
+	  \citeinbeamer{Lamport}{DC}{86} \\ \hline
+	  Linearizability \footnote[frame]{Linearizability is a generalization of atomicity on arbitrary
+  objects.}
+	  & latest & \citeinbeamer{Herlihy}{TOPLAS}{90} \\
+	  \hline Quiescent consistency & don't care & \citeinbeamer{Shavit}{TOCS}{96}
+	  \\ \hline
+	  Regularity {\scriptsize (\texttt{multi-writer})} & it depends
+	  \footnote[frame]{There are too many variants \citeinbeamer{Shao}{DISC}{03}.}
+	  &
+	  \citeinbeamer{Shao}{DISC}{03}
+	  \\ \hline
+	  Safe {\scriptsize (\texttt{multi-writer})} & to be defined &
+	  \citeinbeamer{Future Work}{?}{?} \\ \hline
+	\end{tabular}
+	\caption{A chronological list of consistency models \emph{with} real-time
+	order.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Atomicity as an example}
+  \begin{mdframed}[linecolor = blue]
+    {\small Each operation appears to take effect instantaneously at some moment
+    between its \texttt{invocation} and \texttt{response}.}
+  \end{mdframed}
+
+  \fig{width = 0.55\textwidth}{fig/atomicity-execution-example.pdf}
+  {An atomic execution.}
+
+  \boxedpoint{Atomicity $\equiv$ \texttt{read} semantics + real-time order}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}[label = consistency-model-without-main]{Consistency models without
+real-time order}
+  \begin{table}
+    \centering
+    \resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+	  \hline
+	  {\bfseries Consistency models} & {\bfseries Key ``order"} &
+	  {\bfseries The reference}
+	  \\ \hline \hline
+	  Sequential consistency
+	  \footnote[frame]{\hyperlink{sequential-example-backup}{\beamerbutton{Go to
+	  Backup Slides for Sequential Consistency as An Example}}}
+	  & global sequential order &
+	  \citeinbeamer{Lamport}{TC}{79}
+	  \\ \hline
+	  PRAM consistency & global program order (gpo) & \citeinbeamer{Lipton}{TR}{88}
+	  \\ \hline
+	  Processor consistency & gpo + hf & \citeinbeamer{Goodman}{TR}{89}
+	  \\ \hline
+	  Cache consistency & sequential on each register &
+	  \citeinbeamer{Goodman}{TR}{89}
+	  \\ \hline
+	  Causal consistency & ``happened-before" (hb) &
+	  \citeinbeamer{Ahamad}{WDAG}{91}
+	  \\ \hline
+	  Eventual consistency & no order & \citeinbeamer{Terry}{SOSP}{95}
+	  \\ \hline
+	  Local consistency & local program order &
+	  \citeinbeamer{Bataller}{Euro-Par}{97}
+	  \\ \hline
+	\end{tabular}
+	}
+	\caption{A chronological list of consistency models \emph{without} real-time
+	order.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Sequential consistency as an example}
+  \begin{mdframed}[linecolor = blue, align = center, leftmargin = 1cm, rightmargin = 1cm]
+    {\small Each operation appears to take effect in program order.}
+  \end{mdframed}
+
+  \fig{width = 0.50\textwidth}{fig/sequential-consistency-example.pdf}
+  {A sequential (but not atomic) execution.}
+
+  \boxedpoint{Sequential consistency $\equiv$ \texttt{read} semantics +
+  program order}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Frameworks for consistency models}
+  \begin{columns}
+    \column{0.50\textwidth}
+	  \fig{width = 0.50\textwidth}{fig/framework-timed-consistency.png}
+	  {Hierarchy of consistency models with real-time order
+	  \citeinbeamer{Lamport}{DC}{86}, \citeinbeamer{Haldar}{JACM}{07}.}
+    \column{0.60\textwidth}
+	  \fig{width = 0.70\textwidth}{fig/consistencylattice.png}
+	  {A \largepurple{unified} theory of shared memory consistency: the lattice of
+	  consistency models without real-time order \citeinbeamer{Steinke}{JACM}{04}.}
+  \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Framework for consistency models with real-time order}
+  \fig{width = 0.25\textwidth}{fig/framework-timed-consistency.png}
+  {Hierarchy of consistency models with real-time order
+  \citeinbeamer{Lamport}{DC}{86}, \citeinbeamer{Haldar}{JACM}{07}.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Framework for consistency models without real-time order}
+  \fig{width = 0.40\textwidth}{fig/consistencylattice.png}
+  {A \largepurple{unified} theory of shared memory consistency: the lattice of
+  consistency models without real-time order \citeinbeamer{Steinke}{JACM}{04}.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+% \begin{frame}{Other frameworks for consistency models}
+%
+% \end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Progress: termination guarantees for DSM}
+  \begin{block}{Progress \citeinbeamer{Lamport}{TSE}{77}:}
+    The \largeblue{execution} must show its potential for termination.
+  \end{block}
+
+  \vspace{0.70cm}
+  \blockblue{Define progress in terms of method calls (i.e., operations):}
+  \vspace{-0.20cm}
+
+	\begin{table}[h]
+	  \centering
+	  \resizebox{\textwidth}{!}{%
+	  {\renewcommand{\arraystretch}{1.3} %
+	  \begin{tabular}{c|c|c|c|}
+	  \cline{2-4}
+	   & {\textcolor{red}{\Large \bf Independent progress}}
+	   & \multicolumn{2}{c|}{\textcolor{red}{\bf \Large Dependent progress}}
+	   \\
+	   \hline \multicolumn{1}{|c|}{
+	    \begin{tabular}[c]{@{}c@{}}
+	      {\textcolor{blue}{\Large \bf Maximal progress:}}
+	       \\
+	       \texttt{every method makes progress}
+	    \end{tabular}} &
+	    \begin{tabular}[c]{@{}c@{}} {\textcolor{violet}{\bf Wait-free}}\\
+	  \citeinbeamer{Lamport}{CACM}{74}\end{tabular} &
+	  \begin{tabular}[c]{@{}c@{}}Obstruction-free\\
+	  \citeinbeamer{Herlihy}{ICDCS}{03}\end{tabular} & Starvation-free
+	  \\ \hline
+	  \multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}} {\textcolor{blue}{\Large \bf
+	  Minimal progress:}} \\
+	  \texttt{some method makes progress} \end{tabular}}
+	  & Lock-free &
+	  \begin{tabular}[c]{@{}c@{}}Clash-free\\
+	  \citeinbeamer{Herlihy}{OPODIS}{11}\end{tabular} & Deadlock-free
+	  \\ \hline
+	  \end{tabular}
+	  }
+	  }
+	  \caption{The ``Periodic Table'' of progress conditions \textcolor{blue}{\tiny
+	  [Herlihy@OPODIS'11]}.}
+	\end{table}
+%   \fig{width = 0.90\textwidth}{fig/progress-table.pdf}{The ``Periodic Table'' of
+%   progress conditions.}
+\end{frame}
+%%%%%%%%%%%%%
+% \begin{frame}{Progress: maximal vs. minimal progress}
+%   \begin{definition}[Maximal progress]
+%
+%   \end{definition}
+%
+%   \begin{definition}[Minimal progress]
+%
+%   \end{definition}
+% \end{frame}
+% %%%%%%%%%%%%%
+% \begin{frame}{Progress: independent vs. dependent progress}
+%   definition of ``step''?
+%
+%   \begin{definition}[Independent progress]
+%
+%   \end{definition}
+%
+%   \begin{definition}[Dependent progress]
+%
+%   \end{definition}
+% \end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Wait-free as an example}
+
+	\begin{table}[h]
+	  \centering
+	  \resizebox{\textwidth}{!}{%
+	  {\renewcommand{\arraystretch}{1.3} %
+	  \begin{tabular}{c|c|c|c|}
+	  \cline{2-4}
+	   & {\textcolor{red}{\Large \bf Independent progress}}
+	   & \multicolumn{2}{c|}{\textcolor{red}{\bf \Large Dependent progress}}
+	   \\
+	   \hline \multicolumn{1}{|c|}{
+	    \begin{tabular}[c]{@{}c@{}}
+	      {\textcolor{blue}{\Large \bf Maximal progress:}}
+	       \\
+	       \texttt{every method makes progress}
+	    \end{tabular}} &
+	    \begin{tabular}[c]{@{}c@{}} {\textcolor{violet}{\bf \Large Wait-free}}\\
+	  \citeinbeamer{Lamport}{CACM}{74}\end{tabular} &
+	  \begin{tabular}[c]{@{}c@{}}Obstruction-free\\
+	  \citeinbeamer{Herlihy}{ICDCS}{03}\end{tabular} & Starvation-free
+	  \\ \hline
+	  \multicolumn{1}{|c|}{\begin{tabular}[c]{@{}c@{}} {\textcolor{blue}{\Large \bf
+	  Minimal progress:}} \\
+	  \texttt{some method makes progress} \end{tabular}}
+	  & Lock-free &
+	  \begin{tabular}[c]{@{}c@{}}Clash-free\\
+	  \citeinbeamer{Herlihy}{OPODIS}{11}\end{tabular} & Deadlock-free
+	  \\ \hline
+	  \end{tabular}
+	  }
+	  }
+% 	  \caption{The ``Periodic Table'' of progress conditions \textcolor{blue}{\tiny
+% 	  [Herlihy@OPODIS'11]}.}
+	\end{table}
+
+    \[
+      \textcolor{violet}{\textrm{Wait-free}} \triangleq
+      \textrm{\blue{maximal progress}} + \textrm{\red{independent progress}}
+    \]
+
+  \begin{definition}[Wait-free]
+	\largeblue{Every process} can complete any operation in a \largeblue{bounded}
+	number of steps, \largered{regardless of} the behaviors of other processes.
+  \end{definition}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%
+\subsection{Computability Power and Limitations}
+
+%%%%%%%%%%%%%
+\begin{frame}{Computability: how powerful are registers?}
+  \begin{block}{In this report, we take the \texttt{Read/write} register
+  semantics \largepurple{with} real-time order as example:}
+    \fig{width = 0.50\textwidth}{fig/space-of-registers.pdf}
+    {The three-dimensional space of \texttt{read/write} registers.}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Computability: how powerful are registers?}
+%   \fig{width = 0.98\textwidth}{fig/computability-problems.png}{The
+%   computability problems and the approaches.}
+
+  \fig{width = 0.98\textwidth}{fig/computability-of-registers.pdf}
+  {The computability problems and the approaches.}
+
+%   \blue{This report focuses on the \red{wait-free} progress
+%   \citeinbeamer{Herlihy}{OPODIS}{11}.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Relative computability powers of registers}
+  \begin{theorem}
+  All types of registers are computationally equivalent.
+  \end{theorem}
+
+  \begin{proof}
+    By \largepurple{simulation}.
+    \fig{width = 0.618\textwidth}{fig/simulation_readwrite_register.pdf}{Simulations
+    between \texttt{read/write} registers --- A big fad around 1990s; still
+    under research.}
+  \end{proof}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Computability limitations of registers}
+%   \begin{columns}
+%     \column{0.33\textwidth}
+%       \fig{width = 1.0\textwidth}{fig/consensus-input.png}{Each process has an
+%       input.}
+%     \column{0.33\textwidth}
+%       \fig{width = 1.0\textwidth}{fig/consensus-communicate.png}{Processes
+%       communicate.}
+%     \column{0.33\textwidth}
+%       \fig{width = 1.0\textwidth}{fig/consensus-output.png}{They agree on
+%       one process's input.}
+%   \end{columns}
+
+%   \begin{columns}
+%     \column{0.33\textwidth}
+%       \fignocaption{width = 1.0\textwidth}{fig/consensus-input.png}
+%     \column{0.33\textwidth}
+%       \fignocaption{width = 1.0\textwidth}{fig/consensus-communicate.png}
+%     \column{0.33\textwidth}
+%       \fignocaption{width = 1.0\textwidth}{fig/consensus-output.png}
+%   \end{columns}
+%   \begin{block}{The consensus problem is the most fundamental in distributed
+%   computing.}
+
+  \fig{width = 0.95\textwidth}{fig/consensus-from-herlihy.pdf}
+  {The consensus problem illustrated.}
+
+%   \end{block}
+%   \begin{Definition}[Consensus]
+%     \begin{description}
+%       \item[Agreement:] all processes decide the same value
+%       \item[Validity:] the common decision value is some thread's input
+%     \end{description}
+%   \end{Definition}
+%
+%   \begin{Definition}[Consensus number \citeinbeamer{Herlihy}{TOPLAS}{91}]
+%     Consensus number $\triangleq$ \# of processes involved in consensus
+%   \end{Definition}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Computability limitations of registers}
+  \begin{Theorem}[\citeinbeamer{Herlihy}{TOPLAS}{91}, adapted from the FLP
+  theorem \citeinbeamer{FLP}{JACM}{85}]
+    There is \largepurple{no} wait-free implementation of $n$-process consensus,
+    for any \largepurple{$n > 1$}, from \texttt{\it read/write} registers.
+  \end{Theorem}
+
+  \begin{proof}
+    By the ``valency'' argument.
+  \end{proof}
+
+  \vspace{0.30cm}
+
+  \begin{corollary}[\citeinbeamer{Herlihy}{TOPLAS}{91}]
+    Read/write registers have consensus number $1$.
+  \end{corollary}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Computability limitations of registers}
+  \begin{table}
+    \centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|}
+	  \hline
+	  {\bfseries Consensus numbers} & {\bfseries
+	  Concurrent objects} \\ \hline \hline
+	  1 & \begin{tabular}[c]{@{}c@{}} \largeblue{\texttt{read/write} registers} \\
+	  \citeinbeamer{FLP}{JACM}{85}, \citeinbeamer{Herlihy}{TOPLAS}{91}
+	  \end{tabular}
+	  \\ \hline
+	  2 & get\&set, swap, queue, stack
+	  \\ \hline
+	  $\vdots$ & $\vdots$
+	  \\ \hline
+	  $2n-2$ & $n$-register assignment
+	  \\ \hline
+	  $\vdots$ & $\vdots$
+	  \\ \hline
+	  $\infty$ & compare\&swap, augmented queue
+	  \\ \hline
+	\end{tabular}
+	}
+	\caption{Consensus numbers and consensus hierarchy
+	\tiny{\textcolor{blue}{[Herlihy@TOPLAS'91]}}.}
+  \end{table}
+
+%   \begin{alertblock}{Practical implications:}
+%     Hardware \texttt{RMW} instructions (e.g., \texttt{Test\&Set},
+%     \texttt{Compare\&Swap}) are \red{NOT} syntactic sugars!
+%   \end{alertblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Computability powers of registers}
+%   \begin{alertblock}{Remark adapted from
+%   \citeinbeamer{Lamport}{alllamportspubsontheweb}{15}}
+%
+%     It is \largepurple{circular (and wrong)} to solve the \largepurple{mutual
+%     exclusion} problem assuming \largeblue{atomic} \texttt{read/write}
+%     registers.
+%   \end{alertblock}
+%
+%   \vspace{0.30cm}
+
+  \begin{theorem}
+    The weakest \texttt{\it read/write} registers --- the SWMR safe
+    Boolean
+    \footnote[frame]{It is \purple{circular (and wrong)} to solve
+    the \purple{mutual exclusion} problem assuming \blue{atomic}
+    \texttt{read/write} registers
+    \citeinbeamer{Lamport}{alllamportspubsontheweb}{15}.}
+    ones --- are powerful enough to solve the mutual exclusion problem.
+  \end{theorem}
+
+  \begin{proof}
+    By the bakery algorithm \citeinbeamer{Lamport}{CACM}{74}.
+  \end{proof}
+
+%   \pause
+  \begin{block}{\texttt{Read/write} registers are also powerful enough to
+  solve:}
+    \begin{itemize}
+      \item atomic snapshot \citeinbeamer{AADGMS}{JACM}{93}
+      \item immediate atomic snapshot \citeinbeamer{Borowsky}{PODC}{93}
+      \item renaming \citeinbeamer{Attiya}{Wiley}{04}
+    \end{itemize}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Computability theory of registers}
+  \blockblue{\textrm{Read/write} register semantics without real-time order:}
+	\begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|c|}
+	\hline
+	{\bf Consistency models} & {\bf Mutual exclusion} & {\bf The reference}
+	\\ \hline \hline
+	Sequential consistency & \begin{tabular}[c]{@{}c@{}}YES\\ Lamport
+	Bakery algorithm\end{tabular} & \citeinbeamer{Lamport}{CACM}{74}
+	\\ \hline
+	Processor consistency & \begin{tabular}[c]{@{}c@{}}YES\\ require multi-writer registers\end{tabular} & \citeinbeamer{Ahamad}{SPAA}{93} \\ \hline
+	Causal consistency & NO & \citeinbeamer{Kawash}{Thesis}{00}
+	\\ \hline
+	PRAM consistency & NO & \citeinbeamer{Kawash}{Thesis}{00}
+	\\ \hline
+	Cache consistency & NO & \citeinbeamer{Kawash}{Thesis}{00}
+	\\ \hline
+	\end{tabular}
+	}
+	\caption{Solving mutual exclusion with \texttt{read/write} registers.}
+	\end{table}
+
+  \red{{\bf Implication:} causal registers $\nRightarrow^{\texttt{simulate}}$
+  sequential register.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Computability theory of registers: further results}
+  \begin{exampleblock}{Further results on computability theory of registers:}
+    \begin{itemize}
+  	  \item where objects can fail \citeinbeamer{Afek}{JACM}{95}
+  	  \item randomized consensus hierarchy
+%       \item with bounded number of atomic registers
+      \item combined with other progress conditions
+      \citeinbeamer{Taubenfeld}{OPODIS}{09}
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Recently a new perspective emerges:}
+    Atomic \texttt{read/write} registers also support \largeempurple{distributed
+    recursion} \citeinbeamer{Gafni}{SSS}{10}, \citeinbeamer{Rajsbaum}{EATCS}{11}.
+  \end{exampleblock}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \subsection{Maintenance, Impossibility Results, and Lower Bounds}
+\subsection{Maintenance of Consistency Models}
+%%%%%%%%%%%%%
+\begin{frame}{System model at the maintenance layer reviewed}
+%   \begin{columns}
+%     \column{0.60\textwidth}
+%       \fignocaption{width = 0.85\textwidth}{fig/system-model-two-layers.pdf}
+%     \column{0.40\textwidth}
+%       \fignocaption{width = 0.85\textwidth}{fig/system-model-maintenance.pdf}
+%   \end{columns}
+
+  \begin{block}{Maintenance:}
+    \begin{itemize}
+      \item How to implement a shared \texttt{read/write} register on top of
+      message passing?
+      \item What happens between $[o_{\texttt{invocation}},
+      o_{\texttt{response}}]$?
+    \end{itemize}
+  \end{block}
+
+  \fig{width = 0.55\textwidth}{fig/dsm-model.pdf}
+  {A dsm on top of message passing reviewed.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Maintenance}
+  \[
+    \textrm{Maintenance algorithm } \mathcal{A} \triangleq
+    \setinmath{\textrm{all executions \largeblue{generated} by } \mathcal{A}}
+  \]
+
+  \begin{equation*}
+    \fbox{$\textrm{Algorithm } \mathcal{A} \texttt{\largeblue{ \it implements }}
+    \textrm{specification } \mathcal{S} \triangleq \mathcal{A} \subseteq
+    \mathcal{S}$}
+  \end{equation*}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Performance Indicators}
+  \begin{block}{Performance indicators:}
+  \begin{enumerate}
+    \item \blue{round-trips:} \# of communication rounds
+    \item \blue{message complexity:} \# of messages sent in a
+    \texttt{read/write}
+    \item \blue{fault-tolerance:} \# of process crashes tolerated
+  \end{enumerate}
+  \end{block}
+
+  \begin{center}
+    Maintenance algorithm, impossibility results, and lower bounds in terms of
+    round-trips, message complexity, and fault-tolerance.
+  \end{center}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}[label = order-establish-theory]{General techniques for
+maintenance}
+%   \fignocaption{width = 0.50\textwidth}{fig/order-out-of-chaos.jpg}
+
+  To establish \largepurple{operation orders} without using ``real-time'':
+  \begin{enumerate}
+    \item quorum systems for real-time order
+    \item timestamps for other orders
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quorum systems for maintenance}
+%   \begin{columns}
+%     \column{0.50\textwidth}
+% 	  \fig{width = 0.85\textwidth}{fig/quorum-simple-execution.pdf}
+% 	  {\texttt{Read R} should return value at least fresh as
+% 	  \texttt{W1}.}
+%     \column{0.50\textwidth}
+% 	  \fig{width = 0.85\textwidth}{fig/majority-quorum-3replica-example.pdf}
+% 	  {Both \texttt{W1} and \texttt{R} access a majority of (2 out of 3) replicas
+% 	  before completing.}
+%   \end{columns}
+  \begin{block}{Quorum systems for establishing real-time order: basic idea}
+  \fig{width = 0.85\textwidth}{fig/quorum-system-3ops-3replicas-example.pdf}
+  {Both \texttt{W1} and \texttt{R} access a majority of (2 out of 3) replicas
+  before completing.}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quorum systems for maintenance}
+  \begin{definition}[Quorum system \citeinbeamer{Molina}{JACM}{85}]
+    Given a set of replicas $\mathcal{S} = \setinmath{s_1, s_2, \ldots, s_n}$,
+
+    a \largepurple{quorum system}  $\mathcal{Q} \subseteq 2^{\mathcal{S}}$ is a
+    set of subsets of $\mathcal{S}$ satisfying
+%     \[
+%       \textrm{pairwise intersection property: } \forall_{Q_1, Q_2 \in
+%       \mathcal{Q}}:
+%       Q_1 \cap Q_2 \neq \emptyset.
+%     \]
+
+      \fig{width = 0.35\textwidth}{fig/intersection-three-circles.pdf}
+      {Pairwise intersection property of quorum systems: $\forall_{Q_1, Q_2 \in
+      \mathcal{Q}}: Q_1 \cap Q_2 \neq \emptyset$.}
+
+    \end{definition}
+
+  \vspace{-0.20cm}
+  \begin{theorem}[Quorum system respects real-time order:]
+    The {\it reader} will obtain the value at least fresh as that of
+    \largepurple{the latest preceding \texttt{\it write}} by the pairwise
+    intersection property.
+  \end{theorem}
+
+% 	  \begin{alertblock}{Remark}
+% 	    \begin{itemize}
+% 	      \item focus on \largeblue{consistency}
+% 	      \item ignore load and availability
+% 	    \end{itemize}
+% 	  \end{alertblock}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quorum systems for maintenance}
+  \begin{definition}[\citeinbeamer{Gifford}{SOSP}{79}]
+    A \texttt{read} quorum $\mathcal{R}$ and a \texttt{write} quorum
+    $\mathcal{W}$ such that
+
+    \[
+     \forall_{R \in \mathcal{R}, W \in \mathcal{W}}: R \cap W \neq
+     \emptyset.
+    \]
+  \end{definition}
+
+  \begin{example}
+    \begin{description}
+      \item [ROWA]
+      \item [Majority]
+      \item [Tree Quorum]
+    \end{description}
+  \end{example}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quorum systems for maintenance}
+  Typical usage of quorum systems:
+  \begin{itemize}
+    \item \texttt{write}
+      \begin{enumerate}
+        \item timestamp the data
+        \item write to any \texttt{write} quorum
+      \end{enumerate}
+    \item \texttt{read}
+      \begin{enumerate}
+        \item query any \texttt{read} quorum
+        \item return the data having the highest timestamp
+      \end{enumerate}
+  \end{itemize}
+
+  \todocenter{fig for quorum read and quorum write}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quorum systems for maintenance}
+  \begin{theorem}[Quorum system respects real-time order:]
+    The {\it reader} will obtain the value at least fresh as that of
+    \largepurple{the latest preceding \texttt{\it write}} by the pairwise
+    intersection property.
+  \end{theorem}
+
+  \vspace{0.50cm}
+
+  \begin{alertblock}{However, how to address overlapping?}
+    \begin{enumerate}
+      \item \texttt{read-write} overlapping
+      \item \texttt{write-write} overlapping (for multi-writer cases)
+    \end{enumerate}
+  \end{alertblock}
+
+%   \begin{block}{We survey maintenance algorithms:}
+%     \begin{itemize}
+%       \item from the perspectives of both timestamps and quorum systems
+%       \item for consistency models with/without real-time order
+%     \end{itemize}
+%   \end{block}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Timestamps for maintenance}
+  \begin{block}{Timestamps for establishing other orders:}
+  \begin{enumerate}
+    \item program (FIFO) order: \timestamp{local counter}
+    \item causal order: \timestamp{vector clock}
+    \citeinbeamer{Lamport}{CACM}{78}, \citeinbeamer{Fidge}{ACSC}{88}
+    \item sequential (total) order: \timestamp{(local counter, pid)}
+  \end{enumerate}
+  \end{block}
+%   \begin{exampleblock}{Ordered broadcast/multicast service:}
+%     \fig{width = 0.50\textwidth}{fig/modular-broadcast-timestamp.pdf}
+%     {Relationship among broadcast primitives \citeinbeamer{Toueg}{TR}{94}.}
+%   \end{exampleblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = maintenance-main]{Maintenance}
+
+  \begin{center}
+    \blockblue{We analyze the maintenance algorithms \\ (for different
+    consistency models) in terms of \\ quorum systems and timestamps.}
+
+    \hyperlink{maintenance-backup}{\beamerbutton{Go to Backup Slides for
+    Maintenance Algorithms}}
+  \end{center}
+%   \begin{exampleblock}{Maintaining atomic registers as an example:}
+%
+%   \begin{enumerate}
+%     \item The ABD algorithm for \largepurple{single-writer} atomic registers
+%     \citeinbeamer{ABD}{JACM}{95},
+%   \citeinbeamer{Attiya}{EATCS}{10}
+% 		\begin{description}
+% 		  \item [Timestamps:] \timestamp{local counter} for the single writer
+% 		  \item [Quorum:] \texttt{read-write} overlapping $\Rightarrow$ ``old-new
+% 		  inversions''
+% 		    \begin{itemize}
+% 		      \item {\scriptsize {\it reader} writes back + $\forall_{R_1, R_2 \in
+% 		      \mathcal{R}}: R_1 \cap R_2 \neq \emptyset$}
+% 		    \end{itemize}
+% 		\end{description}
+%
+% 	\vspace{0.30cm}
+%
+%     \item Algorithm for \largepurple{multi-writer} atomic registers
+%     \citeinbeamer{Lynch}{FTCS}{97}
+%       \begin{description}
+%         \item[Timestamps:] \timestamp{(local counter, pid)} for all writers
+%         \item[Quorum:] \texttt{write-write} overlapping
+% %         $\Rightarrow$ \question{what?}
+% 		   \begin{itemize}
+% 		     \item {\scriptsize {\it writer} reads before writing} + {\scriptsize
+% 		     $\forall_{R \in \mathcal{R}, W \in \mathcal{W}}: R \cap W \neq
+% 		     \emptyset$}
+% 		   \end{itemize}
+%       \end{description}
+%   \end{enumerate}
+%
+%   \end{exampleblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+
+\begin{frame}{Maintaining atomic registers}
+  \begin{enumerate}
+    \item The ABD algorithm for \largepurple{single-writer} atomic registers
+    \citeinbeamer{ABD}{JACM}{95},
+  \citeinbeamer{Attiya}{EATCS}{10}
+		\begin{description}
+		  \item [Timestamps:] \timestamp{local counter} for the single writer
+		  \item [Quorum:] \texttt{read-write} overlapping $\Rightarrow$ ``old-new
+		  inversions''
+		    \begin{itemize}
+		      \item {\it reader} writes back + $\forall_{R_1, R_2 \in \mathcal{R}}:
+		      R_1 \cap R_2 \neq \emptyset$
+		    \end{itemize}
+		\end{description}
+
+	\vspace{0.30cm}
+
+    \item Algorithm for \largepurple{multi-writer} atomic registers
+    \citeinbeamer{Lynch}{FTCS}{97}
+      \begin{description}
+        \item[Timestamps:] \timestamp{(local counter, pid)} for all writers
+        \item[Quorum:] \texttt{write-write} overlapping $\Rightarrow$
+        \question{what?}
+		   \begin{itemize}
+		     \item {\it writer} reads before writing + $\forall_{R \in
+		     \mathcal{R}, W \in \mathcal{W}}: R \cap W \neq \emptyset$
+		   \end{itemize}
+      \end{description}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining safe registers}
+  \begin{enumerate}
+    \item Algorithm for \largepurple{single-writer} safe registers
+    \citeinbeamer{Lamport}{DC}{86}
+
+    \item Algorithm for \largepurple{multi-writer} safe registers
+    \scriptsize{\textcolor{blue}{[Not yet well-defined]}}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining regular registers}
+  \begin{enumerate}
+    \item Algorithm for \largepurple{single-writer} regular registers
+    \citeinbeamer{Lamport}{DC}{86}
+
+    \item Algorithm for \largepurple{multi-writer} regular registers
+    \citeinbeamer{Shao}{SIAM J. Comput.}{11}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining sequential consistency}
+  \question{Quorum???}
+
+  Maintaining sequential consistency \citeinbeamer{Attiya}{TOCS}{94},
+  \citeinbeamer{Fekete}{JACM}{98}
+  \begin{description}
+    \item[Timestamps:] totally ordered broadcast
+    \item[Quorum:] \hfill
+      \begin{itemize}
+        \item local \texttt{read}: $|R \in \mathcal{R}| = 1, |W \in \mathcal{W}|
+        = n$
+        \item local \texttt{write}: $|R \in \mathcal{R}| = n, |W \in
+        \mathcal{W}| = 1$
+      \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining causal consistency}
+  Maintaining causal consistency \citeinbeamer{Ahamad}{DC}{95}
+  \begin{description}
+    \item[Timestamps:] vector clock based on the ``happened-before'' relation
+    \citeinbeamer{Lamport}{CACM}{78}
+    \item[Quorum:] \hfill
+      \begin{itemize}
+        \item local \texttt{read}: $|R \in \mathcal{R}| = 1, |W \in \mathcal{W}|
+        = n$
+      \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining PRAM consistency}
+  Maintaining PRAM consistency \citeinbeamer{Lipton}{TR}{88}
+\end{frame}
+%%%%%%%%%%%%%
+
+\end{comment}
+
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}[label = impossibility-lowerbounds-main]{Impossibility results and lower
+bounds}
+  \fig{width = 0.75\textwidth}{fig/impossibility-lowerbounds-logo.pdf}
+  {Let's move to the impossibility results and lower bounds.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Impossibility results and lower bounds}
+  \begin{block}{1. Why should we know?}
+	\begin{description}
+	  \item[Theory:] fundamental (local knowledge)
+	  \item[Practice:] circumvention (e.g., assumptions, randomized)
+	\end{description}
+  \end{block}
+
+
+  \begin{block}{2. What are they about?}
+% 	\begin{itemize}
+	  In terms of message complexity, fault-tolerance, latency, and so on.
+% 	\end{itemize}
+  \end{block}
+
+  \begin{block}{3. What have we already known?}
+    \citeinbeamer{Lipton}{TR}{88}
+    \citeinbeamer{Lynch}{PODC}{89}, \citeinbeamer{Attiya}{TOCS}{94},
+	\citeinbeamer{Fich}{PODC}{03}, \citeinbeamer{Dutta}{PODC}{04},
+	\citeinbeamer{Attiya}{Wiley}{04}, \citeinbeamer{Attiya}{Morgan}{14}
+% 	\begin{enumerate}
+	  \hyperlink{impossibility-backup}{\beamerbutton{Go to Backup Slides for
+	  Impossibility Results}} $\qquad$
+	  \hyperlink{lowerbounds-backup}{\beamerbutton{Go to Backup Slides for
+	  Lower Bounds}}
+% 	\end{enumerate}
+  \end{block}
+
+%   \begin{block}{4. How do we know?}
+%     ``\red{Six} Fundamental Theorems of Distributed Computing'' (not yet !)
+%   \end{block}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Practice of Consistency Models}
+
+%%%%%%%%%%%
+\subsection{Trade-offs and Design Elements}
+
+%%%%%%%%%%%%%
+\begin{frame}{Distributed storage systems}
+  \fig{width = 0.95\textwidth}{fig/timeline-of-distributed-storage-systems.pdf}
+  {A chronological list of distributed storage systems (commercial [above] and open-source
+  [below]).}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Desired properties of distributed storage systems}
+%   \begin{columns}
+%     \column{0.50\textwidth}
+      \begin{block}{Desired properties:}
+	  \begin{itemize}
+	    \item \largeblue{C}onsistency
+	    \item \largeblue{A}vailability
+	    \item \largeblue{P}artition-tolerance
+	    \item \largeblue{L}atency (performance)
+	    \item \largeblue{R}eliability (fault-tolerance)
+	    \item \largeblue{S}calibility
+	%     \item Concurrency
+	  \end{itemize}
+	  \end{block}
+% 	\column{0.50\textwidth}
+% 	  \fig{width = 0.65\textwidth}{fig/desired-properties-safety-progress-logo.pdf}
+% 	  {More progress properties than safety properties.}
+%   \end{columns}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{The CAP trade-off}
+%   concurrency and availability as dual properties
+%   \citeinbeamer{Herlihy}{JACM}{90}
+%     \fignocaption{width = 0.50\textwidth}{fig/capexplained.png}
+
+	\fignocaption{width = 0.60\textwidth}{fig/cap-theorem.pdf}
+
+    \begin{theorem}[The \largepurple{CAP}
+    theorem \citeinbeamer{Brewer}{PODC}{00},
+    \citeinbeamer{Gilbert}{IEEE Computer}{12}] It is \largeblue{impossible} for
+    any distributed shared-data system to provide \largeblue{C, A, and P} simultaneously.
+    \end{theorem}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{The PACELC [pronounced ``pass-elk''] trade-off}
+  \begin{definition}[The \largepurple{PACELC} trade-off
+  \citeinbeamer{Abadi}{IEEE Computer}{12}]
+    \fignocaption{width = 0.40\textwidth}{fig/PACELC-tradeoff.pdf}
+
+%     \begin{displaymath}
+%       \xymatrix{
+%         \textrm{If } & \textrm{\underline{P}artition} \\
+% 		\; & \textrm{\underline{A}vailability} \& \textrm{\underline{C}onsistency} \\
+% 		\textrm{\underline{E}lse} & \\
+% 		\; & \textrm{\underline{L}atency} \& \textrm{\underline{C}onsistency}
+% 	  }
+% 	\end{displaymath}
+  \end{definition}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Trade-offs from the perspective of consistency}
+%   general principle: Simple, \citeinbeamer{Zhou}{SIGACTNews}{09}
+
+  \largepurple{Consistency} options:
+  \begin{enumerate}
+    \item weak consistency models
+      \begin{itemize}
+        \item \textsc{Argue}: strong consistency is too expensive
+      \end{itemize}
+    \item strong consistency models
+      \begin{itemize}
+        \item \textsc{Argue}: weak consistency is hard to understand
+      \end{itemize}
+    \item hybrid consistency models
+  \end{enumerate}
+
+  \begin{definition}[Strong Consistency]
+    In a \largepurple{strong} consistency condition, all processes should agree
+    on the same view of the order in which operations occur
+    \citeinbeamer{Attiya}{Wiley}{04}.
+  \end{definition}
+\end{frame}
+%%%%%%%%%%%
+\begin{frame}[label = design-elements-main]{Design elements of distributed
+storage systems}
+%   \fig{width = 0.75\textwidth}{fig/system-dimensions-without-consistency.pdf}
+%   {Elements of distributed storage system design from the perspective of
+%   consistency.}
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+
+	  \begin{tabular}{|c|c|c|}
+	    \hline
+		\textbf{Design Elements} & \textbf{Description} & \textbf{Effects}
+		\\ \hline \hline
+		{\bf Topology} & \begin{tabular}[c]{@{}c@{}}How are the \\ replicas organized?
+		\end{tabular}
+		& \begin{tabular}[c]{@{}c@{}}Define the system's basic \\ complexity, availability, and efficiency.\end{tabular} \\ \hline
+		{\bf Concurrency Control} & \begin{tabular}[c]{@{}c@{}}How do the \\ replicas
+		interact?\end{tabular} & \begin{tabular}[c]{@{}c@{}}Define the system's\\
+		scalability and performance.\end{tabular} \\ \hline
+		{\bf Ordering Policy} & \begin{tabular}[c]{@{}c@{}}How do the\\ replicas order
+		operations?\end{tabular} & \begin{tabular}[c]{@{}c@{}}Define the system's \\ consistency
+		level.\end{tabular}
+		\\ \hline
+	  \end{tabular}
+	}
+	\caption{Design elements of distributed storage systems.}
+  \end{table}
+
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	{\renewcommand{\arraystretch}{2}
+	\begin{tabular}{|c|c|c|c||c|c||c|c|}
+	\hline
+	\multicolumn{4}{|c||}{\Large \textbf{Topology}} &
+	\multicolumn{2}{c||}{\Large \textbf{Concurrency Control}} &
+	\multicolumn{2}{c|}{\Large \textbf{Ordering Policy}}
+	\\ \hline
+	{\Large Primary-backup} & {\Large Multi-master} & {\Large Peer-to-peer} &
+	{\Large Chain
+	\footnote[frame]{\hyperlink{case-study-chain-backup}{\beamerbutton{Go to Backup
+	Slides for Chain Replication}}}}
+	& {\Large Pessimistic} & {\Large
+	Optimistic} & {\Large Ordering establishment} & {\Large Conflict resolution}
+	\\ \hline
+	&  &  &  &  &  &  &
+	\\ \hline
+	\end{tabular}
+	}
+	}
+	\caption{Design options for each design element.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Design elements of DSS: topology}
+  \blockblue{Topology: How are the replicas organized?}
+
+  \fig{width = 0.90\textwidth}{fig/topology-primarybackup-multimaster.pdf}
+  {Topology: (a) primary-backup and (b) multi-master.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Design elements of DSS: topology}
+  \blockblue{Topology: How are the replicas organized?}
+
+  \fig{width = 0.95\textwidth}{fig/topology-chain-p2p.pdf}
+  {Topology: (c) peer-to-peer and (d) chain.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Design elements of DSS: concurrency control}
+  \blockblue{Concurrency control: How do the replicas interact
+  \citeinbeamer{Saito}{CSUR}{05}?}
+
+  \fig{width = 0.90\textwidth}{fig/concurrency-control.pdf}{Pessimistic and
+  optimistic concurrency control.}
+\end{frame}
+%%%%%%%%%%%
+\begin{frame}{Design elements of DSS: ordering policy}
+  \blockblue{Ordering policy: How do the replica order operations?}
+
+  \begin{block}{Ordering policy involves:}
+  \begin{enumerate}
+    \item Ordering (partial order) establishment
+      \begin{itemize}
+        \item
+          $
+      		\textrm{different consistency}
+      		\xrightleftharpoons[\textrm{define}]{\,\textrm{specify}\,}
+      		\textrm{different partial orders}
+    	  $
+        \item \hyperlink{order-establish-theory}{\beamerbutton{already covered
+        in the Theory part}}
+      \end{itemize}
+    \item Conflict detection and resolution
+      \blockblue{$\textrm{Conflict } \triangleq \textrm{ non-partially
+      ordered operations}$}
+
+      \begin{itemize}
+        \item when to resolve:
+        \item who resolves: system \fbox{vs.} users
+      \end{itemize}
+  \end{enumerate}
+  \end{block}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%
+\begin{frame}[label = consistency-models-and-design-elements-main]{Consistency
+models and design elements}
+	% \usepackage{multirow}
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{\blue{\textbf{\large Consistency models}}} &
+	\multicolumn{3}{c|}{\blue{\textbf{\large Design elements}}} \\ \cline{2-4} &
+	\textbf{Topology} & \textbf{Concurrency control} & \textbf{Ordering policy} \\ \hline Weak consistency models &  &  &  \\ \hline
+	Strong consistency models &  &  &  \\ \hline
+	Hybrid consistency models 	\footnote[frame]{\hyperlink{hybrid-consistency-backup}{\beamerbutton{Go to
+	Backup Slides for Hybrid Consistency Models}}}
+	 &  &  &  \\ \hline
+	\end{tabular}
+	}
+	\caption{Explore design elements from the perspective of weak, strong, and
+	hybrid consistency models in distributed storage systems.}
+  \end{table}
+
+  \begin{center}
+    \blockblue{In the following, one typical storage system per consistency.}
+  \end{center}
+\end{frame}
+%%%%%%%%%%%
+\subsection{Weak Consistency Models in Storage Systems}
+
+%%%%%%%%%%%%%
+\begin{frame}{Weak consistency models}
+  \fig{width = 0.75\textwidth}{fig/from-eventual-to-causal-consistency-bar.pdf}
+  {A spectrum of weak consistency models: from eventual consistency to causal
+  consistency.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = eventual-consistency-main]{Eventual consistency}
+  \begin{definition}[Eventual consistency \citeinbeamer{Terry}{SOSP}{95}]
+    \largeblue{Eventual consistency} means that all replicas will
+    \emph{eventually} reach a consistent state \largepurple{\it if}
+    \texttt{writes} stop arriving.
+  \end{definition}
+
+%   \vspace{0.50cm}
+%
+%   \begin{alertblock}{Two issues:}
+% 	\begin{enumerate}
+% 	  \item All \texttt{writes} will eventually reach all replicas.
+% 	  \item All replicas resolve conflicts uniformly.
+% 	\end{enumerate}
+%   \end{alertblock}
+
+  \begin{center}
+    \hyperlink{eventual-consistency-backup}{\beamerbutton{Go to Backup
+    Slides for Formal Definition of Eventual Consistency}}
+  \end{center}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Eventual consistency}
+  \begin{definition}[Formal definition of eventual consistency
+  \citeinbeamer{Serafini}{PODC}{10}]
+    \begin{description}
+      \item[Nontriviality:]
+      \item[Set stability:]
+      \item[Prefix consistency:]
+    \end{description}
+  \end{definition}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-amazon-main]{Case study: Dynamo at Amazon}
+  \begin{block}{Rationale behind Dynamo (AP + L $>$ C)
+  \citeinbeamer{Amazon}{SOSP}{07}:}
+    \begin{enumerate}
+      \item availability (``always-on'' experience) $>$ consistency
+        \begin{itemize}
+          \item ``always writable'' in Shopping Cart Service
+        \end{itemize}
+      \item built for latency sensitive applications
+    \end{enumerate}
+  \end{block}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{} & \multicolumn{4}{c|}{\textbf{Topology}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Concurrency\\ Control\end{tabular}}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Ordering\\ Policy\end{tabular}}}
+	\\ \cline{2-9}
+	& Primary-backup & Multi-master & P2P & Chain
+	& Pessimism & Optimism
+	& \begin{tabular}[c]{@{}c@{}}Ordering\\ establishment\end{tabular} &
+	\begin{tabular}[c]{@{}c@{}}Conflict\\ resolution\end{tabular}
+	\\ \hline
+	\textbf{Dynamo}
+	\footnote[frame]{\hyperlink{case-study-eventual-consistency-backup}{\beamerbutton{Go
+	to Backup Slides for Other Case Studies for Eventual Consistency}}}
+	&  &  & {\large \textcolor{red}{\CheckmarkBold}} & & \textcolor{red}{\large
+	\CheckmarkBold} \footnote[frame]{Recommended in \citeinbeamer{Amazon}{SOSP}{07}} &
+	\textcolor{lightgray}{\large \CheckmarkBold}
+	& \begin{tabular}[c]{@{}c@{}}NO specific\\ at \texttt{writes}\end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}Version clock\\ upon \texttt{reads}\end{tabular}
+	\\ \hline
+	\end{tabular}
+	}
+  \caption{Design elements of Dynamo at Amazon.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Case study: Dynamo at Amazon}
+  \fig{width = 0.45\textwidth}{fig/dynamo-topology.pdf}{Topology: replicas of
+  keys in Dynamo ring without master.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Dynamo at Amazon}
+  \begin{block}{Configurable ``sloppy quorum'':}
+    \begin{itemize}
+      \item pessimistic: $(N, R, W) = (3,2,2)$ \fbox{in
+      \citeinbeamer{Amazon}{SOSP}{07}}
+      \item optimistic: $R = 1$, $W = 1$
+    \end{itemize}
+  \end{block}
+
+  \fig{width = 0.70\textwidth}{fig/dynamo-concurrency-control.pdf}{Concurrency
+  control: configurable sloppy quorum.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Dynamo at Amazon}
+  \begin{block}{Data versioning for conflict resolution:}
+    \begin{itemize}
+      \item \largepurple{no} specific operation orders to keep upon
+      \texttt{writes}
+      \item syntactic and semantic resolution (upon a \texttt{read})
+    \end{itemize}
+  \end{block}
+
+  \fig{scale = 0.50}{fig/dynamo-scheduling.pdf}{Syntatic and
+  semantic conflict resolution using vector clock \emph{(node, counter)}.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%
+\begin{frame}{Variants of eventual consistency}
+  \begin{table}[h]
+    \centering
+    \resizebox{\textwidth}{!}{
+	\begin{tabular}{|c|c|}
+	  \hline
+	  {\bfseries Consistency} & {\bfseries Description}
+	  \\ \hline \hline
+	  Read-your-writes & \texttt{read} operations reflect previous \texttt{writes}
+	  \\ \hline
+	  Monotonic \texttt{reads}
+	  & \begin{tabular}[c]{@{}c@{}}successive \texttt{reads} reflect\\ a
+	  non-decreasing set of \texttt{writes}\end{tabular}
+	  \\ \hline
+	  Writes-follow-reads
+	  & \begin{tabular}[c]{@{}c@{}}\texttt{writes} are propagated\\ after
+	  \texttt{reads} on which they depend \end{tabular}
+	  \\ \hline
+	  Monotonic writes & \begin{tabular}[c]{@{}c@{}}\texttt{writes} are
+	  serialized\\ by the same process \end{tabular}
+	  \\ \hline
+	  Session & the combination of the above
+	  \\ \hline
+	  Consistent prefix & \begin{tabular}[c]{@{}c@{}}reader observes\\ an ordered
+	  sequence of \texttt{writes} \end{tabular}
+	  \\ \hline
+	  Per-record timeline consistency
+	  & \begin{tabular}[c]{@{}c@{}}all \texttt{writes} to the same record\\
+	  applied in the same order\end{tabular} \\ \hline
+	\end{tabular}
+	}
+	\caption{Variants of eventual consistency \citeinbeamer{Vogels}{CACM}{09},
+	\citeinbeamer{Terry}{CACM}{13}.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%
+\begin{frame}[label = case-study-pnuts-main]{Case study: PNUTS at Yahoo!}
+  \begin{block}{Rationale behind PNUTS (AP + L $>$ C)
+  \citeinbeamer{Yahoo!}{VLDB}{08}:}
+	\begin{itemize}
+	  \item availability dominates
+	    \begin{itemize}
+	      \item ``If we cannot serve ads, Yahoo! does not get paid''
+	    \end{itemize}
+	  \item strong consistency is expensive and unnecessary
+	  \item eventual consistency is too weak for Yahoo!'s applications
+	\end{itemize}
+  \end{block}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{} & \multicolumn{4}{c|}{\textbf{Topology}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Concurrency\\ Control\end{tabular}}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Ordering\\ Policy\end{tabular}}}
+	\\ \cline{2-9}
+	& Primary-backup & Multi-master & P2P & Chain
+	& Pessimism & Optimism
+	& \begin{tabular}[c]{@{}c@{}}Ordering\\ establishment\end{tabular} &
+	\begin{tabular}[c]{@{}c@{}}Conflict\\ resolution\end{tabular}
+	\\ \hline
+	\textbf{PNUTS}
+	\footnote[frame]{\hyperlink{case-study-pnuts-backup}{\beamerbutton{Go
+	to Backup Slides for Case Studies for Variants of Eventual Consistency}}}
+	& {\large \textcolor{red}{\CheckmarkBold}} &  &  & &
+	\textcolor{red}{\large \CheckmarkBold} &
+	& \begin{tabular}[c]{@{}c@{}}Serialized\\ versions \end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}Not necessarily\\ in normal cases \end{tabular}
+	\\ \hline
+	\end{tabular}
+	}
+  \caption{Design elements of PNUTS at Yahoo!.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}[label = case-study-cops-main]{Causal consistency}
+  \begin{definition}[Casual consistency]
+    \fig{width = 0.50\textwidth}{fig/causal-consistency-example.pdf}
+    {Causal consistency illustrated by an execution.}
+  \end{definition}
+
+  \vspace{-0.80cm}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{} & \multicolumn{4}{c|}{\textbf{Topology}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Concurrency\\ Control\end{tabular}}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Ordering\\ Policy\end{tabular}}}
+	\\ \cline{2-9}
+	& Primary-backup & Multi-master & P2P & Chain
+	& Pessimism & Optimism
+	& \begin{tabular}[c]{@{}c@{}}Ordering\\ establishment\end{tabular} &
+	\begin{tabular}[c]{@{}c@{}}Conflict\\ resolution\end{tabular}
+	\\ \hline
+	\textbf{COPS}
+	\footnote[frame]{\hyperlink{case-study-cops-backup}{\beamerbutton{Go
+	to Backup Slides for Case Study of COPS}}}
+	& {\large \textcolor{red}{\CheckmarkBold}} &  &  & &
+	& \textcolor{red}{\large \CheckmarkBold}
+	& \begin{tabular}[c]{@{}c@{}}Explicit\\ logical clock \end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}Last-Writer-Wins \end{tabular}
+	\\ \hline
+	\end{tabular}
+	}
+  \caption{Design elements of COPS at Princeton
+  \citeinbeamer{Lloyd}{SOSP}{11}, \citeinbeamer{Lloyd}{NSDI}{13}.}
+  \end{table}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+%%%%%%%%%%%%
+\subsection{Strong Consistency Models in Storage Systems}
+
+%%%%%%%%%%%%%
+\begin{frame}{Strong consistency models}
+  \begin{definition}[Strong consistency]
+    In a \largepurple{strong} consistency condition, all processes should agree
+    on the same view of the order in which operations occur
+    \citeinbeamer{Attiya}{Wiley}{04}.
+  \end{definition}
+
+  \begin{exampleblock}{Two typical examples:}
+    \begin{itemize}
+      \item atomicity (external consistency)
+      \item sequential consistency
+    \end{itemize}
+  \end{exampleblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-megastore-main]{Case study: Megastore at
+Google}
+  \begin{block}{Google's productions:}
+    Chubby \citeinbeamer{Google}{OSDI}{06} $\Rightarrow$
+    Bigtable \citeinbeamer{Google}{OSDI}{06} $\Rightarrow$
+    \blockred{Megastore} \citeinbeamer{Google}{CIDR}{11}$\Rightarrow$
+    Spanner \citeinbeamer{Google}{OSDI}{12}
+  \end{block}
+
+  \begin{block}{Rationale behind Megastore:}
+    Programmers want strong consistency.
+  \end{block}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+	\hline
+	\multirow{2}{*}{} & \multicolumn{4}{c|}{\textbf{Topology}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Concurrency\\ Control\end{tabular}}}
+	& \multicolumn{2}{c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Ordering\\ Policy\end{tabular}}}
+	\\ \cline{2-9}
+	& {\Large Primary-backup} & {\Large Multi-master} & {\Large P2P} & {\Large
+	Chain}
+	& {\Large Pessimism} & {\Large Optimism}
+	& \begin{tabular}[c]{@{}c@{}}{\Large Ordering}\\
+	{\Large establishment}\end{tabular} &
+	\begin{tabular}[c]{@{}c@{}}{\Large Conflict}\\ {\Large resolution}\end{tabular}
+	\\ \hline
+	\textbf{\huge Megastore}
+	\footnote[frame]{\hyperlink{case-study-megastore-backup}{\beamerbutton{Go
+	to Backup Slides for Case Study of Megastore}}}
+	&  & {\large \textcolor{red}{\CheckmarkBold}} &  & &
+	\textcolor{red}{\large \CheckmarkBold} &
+	& \begin{tabular}[c]{@{}c@{}}{\Large Multi-Paxos} \end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}{\Large Not} \\ {\Large necessarily}
+	\end{tabular} \\ \hline
+	\end{tabular}
+	}
+  \caption{Design elements of Megastore at Google.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+% \begin{frame}{Chain replication}
+%
+% \end{frame}
+%%%%%%%%%%%%
+% \subsection{Hybrid Consistency Models in Storage Systems}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Gap between Theory and Practice}
+
+%%%%%%%%%%%
+\subsection{Gap in Terms of SLA}
+
+%%%%%%%%%%%%%
+\begin{frame}{Gap between theory and practice: overview}
+  \begin{block}{1. Gap between theory and practice}
+  \end{block}
+
+  \begin{block}{2. Gap in terms of SLA}
+  \end{block}
+
+  \begin{block}{3. Bridging gap in an SLA-guided way}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Gap between theory and practice}
+  \begin{table}[h]
+	\begin{tabular}{|c|c|c|}
+	\hline
+	\textbf{In practice}  & \textbf{Example}  & \textbf{Theory says,}
+	\\ \hline \hline
+	\begin{tabular}[c]{@{}c@{}}Claims\\ without proofs\end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}``We provide\\ atomicity to users."\end{tabular}
+	& \blue{Verify} it!
+	\\ \hline
+	\begin{tabular}[c]{@{}c@{}}Trade-offs \\ without quantitation\end{tabular}
+	&\begin{tabular}[c]{@{}c@{}}``If users can tolerate\\ the inconsistencies,
+	$\ldots$"\end{tabular}
+	& \blue{Quantify} it!
+	\\ \hline
+	\begin{tabular}[c]{@{}c@{}}Experiments \\ without analysis\end{tabular}
+	&\begin{tabular}[c]{@{}c@{}}``In most cases,\\ it makes progress
+	well."\end{tabular}
+	& \blue{Formalize} it!
+	\\ \hline
+	\begin{tabular}[c]{@{}c@{}}Descriptions\\ without definitions\end{tabular}
+	&\begin{tabular}[c]{@{}c@{}}``We care about availability,\\ scalability,
+	convergence"\end{tabular}
+	& \blue{Define} it!
+	\\ \hline
+	\end{tabular}
+	\caption{``Criticize'' practice from the point of view of theory.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Gap between theory and practice}
+  \begin{table}[h]
+	\centering
+% 	\resizebox{1.1\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+	\hline
+	{\bf In theory} & {\bf Example} & {\bf Practice says,}
+	\\ \hline \hline
+	\begin{tabular}[c]{@{}c@{}}Specification: \\ safety first\end{tabular}
+	& ``Safety ``
+	& \multirow{3}{*}{Not in reality.}
+	\\ \cline{1-2}
+	\begin{tabular}[c]{@{}c@{}}Lower bounds:\\ on assumptions\end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}``Wait-free \\ is independent.'' \end{tabular}
+	&
+	\\ \cline{1-2}
+	\begin{tabular}[c]{@{}c@{}}Maintenance:\\ on worst cases \end{tabular}
+	& \begin{tabular}[c]{@{}c@{}}``each \texttt{read} \\ completes in two rounds.''
+	\end{tabular}
+	&
+	\\ \hline
+	\end{tabular}
+% 	}
+	\caption{``Criticize'' theory from the point of view of practice.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Gap between theory and practice}
+  \begin{block}{Question: Why do theory and practice deviate?}
+  \end{block}
+
+  \begin{block}{An Answer: They differ in values
+  \citeinbeamer{Fischer}{DC}{03},
+  \citeinbeamer{Zhou}{SIGACT News}{09}.}
+  \end{block}
+
+  \begin{table}[h]
+    \centering
+	\begin{tabular}{|c|c|}
+	  \hline
+	  {\bf Theory} & {\bf Practice} \\ \hline \hline
+	  abstraction & details  \\ \hline
+	  elegance & ad-hoc designs  \\ \hline
+	  for understanding & \blockblue{SLA} \\ \hline
+	\end{tabular}
+	\caption{Theory and practice differ in values.}
+  \end{table}
+
+  \begin{textblock}{3}[0.5,0.5](12.5,7.5)
+    \fignocaption{width = 0.90\textwidth}{fig/mind-the-gap.jpg}
+  \end{textblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Gap in terms of SLA}
+  \begin{definition}[Service Level Agreement (SLA)
+  \citeinbeamer{Amazon}{SOSP}{07}]
+    SLA is a negotiated \largepurple{contract} where a client and a
+    service agree on several system-related characteristics.
+  \end{definition}
+
+  \vspace{0.50cm}
+  \boxedpoint{SLA is the \largeblue{specification/QOS} of storage systems.}
+  \vspace{0.50cm}
+
+  \begin{block}{Theory fails in practice:}
+    \begin{itemize}
+      \item SLA prevails in industry
+      \item SLA in practice $\gg$ specification in theory
+    \end{itemize}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Service Level Agreement (SLA)}
+  \begin{exampleblock}{An example of SLA \citeinbeamer{Amazon}{SOSP}{07}:}
+    \begin{description}
+      \item[Client:] peak load of 500 requests per second
+      \item[Service:] responds within 300ms for 99.9\% of its requests
+    \end{description}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Another example of SLA \citeinbeamer{Terry}{SOSP}{13}:}
+    \begin{quote}
+      I'd ideally like to be able to
+      \begin{enumerate}
+        \item read my own \texttt{\it writes}, but
+        \item I'll accept any \blue{consistency} as long as data is returned in
+        under 300 ms
+      \end{enumerate}
+    \end{quote}
+  \end{exampleblock}
+
+%   \begin{exampleblock}{Another example of SLA \citeinbeamer{Terry}{SOSP}{13}:}
+%     \begin{quote}
+% 	  I want data that is
+% 	  \begin{enumerate}
+% 	    \item at most 5 minutes out-of-date, and I will pay
+% 	    \item \$0.00001 for \texttt{\it reads} that return in under 200 ms
+% 	    \item \$0.000008 for \texttt{\it reads} with latency under 400 ms
+% 	    \item \$0.000005 for \texttt{\it reads} in under 600 ms
+% 	    \item nothing for \texttt{\it reads} over 600 ms
+% 	  \end{enumerate}
+%     \end{quote}
+%   \end{exampleblock}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{SLA in practice versus Specification in theory}
+  \definecolor{eggreen}{rgb}{0.0, 0.5, 0.0}
+  \begin{block}{SLA in practice \fbox{vs.} Specification in theory}
+    \begin{enumerate}
+      \item More new ones, \textcolor{eggreen}{\bf e.g.,}
+		\begin{itemize}
+		  \item availability
+		  \item scalability
+		\end{itemize}
+      \item Finer-grained, \textcolor{eggreen}{\bf e.g.,}
+        \begin{itemize}
+          \item quantification of consistency
+          \item most cases vs. rare cases (99.9\%)
+          \item latency in ``real-time'' ({\it ms})
+        \end{itemize}
+    \end{enumerate}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+%%%%%%%%%%%
+\subsection{Bridging Gap in an SLA-guided Way}
+
+%%%%%%%%%%%%%
+\begin{frame}{Bridging Gap in an SLA-guided Way}
+  \begin{block}{Bridging Gap in an SLA-guided Way:}
+    \begin{enumerate}
+      \item \largeblue{verification} of consistency models
+      \item \largeblue{quantification} of consistency models
+      \item other possible directions
+    \end{enumerate}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%%
+\subsubsection{Verifying Consistency Models}
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models}
+  \begin{definition}[Verifying a consistency model]
+    \begin{itemize}
+      \setlength{\itemsep}{0.40cm}
+      \item $\mathcal{I}$nstance:
+		\begin{itemize}
+		  \item a \emph{read/write} execution $e$
+		  \item a consistency model $\mathcal{C}$
+		\end{itemize}
+      \item $\mathcal{P}$roblem:
+        \begin{itemize}
+		  \item Does the execution $e$ satisfy the consistency model $\mathcal{C}$?
+		\end{itemize}
+    \end{itemize}
+  \end{definition}
+
+  \boxedpointblue{We overview the algorithms and complexity.}
+
+  \boxedpoint{$n \triangleq \textrm{ \# of operations in } e.$}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Variants of the verification problem}
+  \begin{block}{Variants of the problem of verifying a consistency model:}
+    \begin{itemize}
+      \item \# of processes
+      \item \# of variables
+      \item write unique value \fbox{vs.} write duplicate value
+      \item write-order given or not
+    \end{itemize}
+  \end{block}
+
+  \begin{mdframed}[align = center, leftmargin = 1.5cm, rightmargin = 1.5cm]
+    \red{\bf Trade-offs between the generality of a consistency condition and
+    its complexity.}
+  \end{mdframed}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models: VSC and VL}
+
+  {\small \textcolor{blue}{\bf VSC: Verifying Sequential Consistency;}
+  \textcolor{blue}{\bf VL: Verifying Linearizability}}
+
+  \begin{table}[h]
+    \centering
+%     \resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+      \hline
+      {\bf \large Variants} & {\bf \large VSC results} & {\bf \large VL results}
+      \\ \hline \hline
+	  general problem & \textsf{NP}-complete & \textsf{NP}-complete
+	  \\ \hline
+	  2 operations per process & \textsf{NP}-complete & w.l.o.g.
+	  \footnote[frame]{The complexity is not affected by the given restriction.}
+	  \\
+	  2 variables & \textsf{NP}-complete & w.l.o.g.\\
+	  3 processes & \textsf{NP}-complete & $O(n \log n)$
+	  \\ \hline
+	  read-mapping & \textsf{NP}-complete &  $O(n \log n)$ \\
+	  write-order & \textsf{NP}-complete &  $O(n \log n)$ \\
+	  \texttt{read\&write} only & \textsf{NP}-complete & \textsf{NP}-complete \\
+	  conflict-order & $O(n \log n)$ &  $O(n \log n)$
+	  \\ \hline
+	\end{tabular}
+% 	}
+	\caption{A summary of results on verifying sequential consistency ({\bf VSC})
+	and linearizability ({\bf VL}) \citeinbeamer{Gibbons}{SIAM J. Comput.}{97}.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models: VMC}
+
+  {\small \textcolor{blue}{\bf VMC: Verifying Memory Coherence (a.k.a Cache
+  Consistency)}}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+	\hline
+	 {\bf Variants} & {\bf \texttt{\bf Read/Write}} & {\bf \texttt{\bf
+	 Read-Modify-Write}}
+	 \\ \hline \hline
+	1 Operation/Process & $O(n \lg n)$ & $O(n^2)$ \\
+	2 Operations/Process & ? & \textsf{NP}-complete \\
+	3+ Operations/Process & \textsf{NP}-complete & \textsf{NP}-complete
+	\\ \hline
+	Constant $k$ Processes & $O(n^k)$ & $O(n^k)$
+	\\ \hline
+	1 Write/Value ({\it read-mapping}) & $O(n)$ & $O(n \lg n)$ \\
+	2 Writes/Value & \textsf{NP}-complete & ? \\
+	3+ Writes/Value & \textsf{NP}-complete & \textsf{NP}-complete
+	\\ \hline
+	Write-order Given & $O(n^2)$ & $O(n)$
+	\\ \hline
+	\end{tabular}
+	}
+	\caption{A summary of complexity results for verifying memory coherence ({\bf
+	VMC}) \citeinbeamer{Cantin}{SPAA}{03}, \citeinbeamer{Cantin}{TPDS}{05}.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models}
+
+  {\small \textcolor{blue}{\bf Verifying Safety, Regularity, and Atomicity:}}
+  \begin{enumerate}
+    \item Variant: write unique value
+    \item Online: detect a consistency violation as soon as one happens
+  \end{enumerate}
+
+  \begin{table}[h]
+	\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	 & \textbf{Safety} & \textbf{Regularity}
+	 & \textbf{Atomicity} & \textbf{Sequential}
+	 \\ \hline  \hline
+	\begin{tabular}[c]{@{}c@{}}\textbf{Offline}\\
+	\citeinbeamer{Anderson}{HotDep}{10}\end{tabular}
+	 & $O(n^2)$ & $O(n^2)$ & $O(n^3)$ & {\it not studied}
+	 \\ \hline
+	\begin{tabular}[c]{@{}c@{}}\textbf{Online} \footnote[frame]{With some other
+	assumptions.}\\
+	\citeinbeamer{Golab}{PODC}{11} \end{tabular} & $O(n)$ & $O(n)$ & $O(n \log n)$ & $\textsf{Poly}(n)$
+	\\ \hline
+	\end{tabular}
+  \end{table}
+
+  $O(n \log n)$ for 2-atomicity verification \citeinbeamer{Golab}{ICDCS}{13}.
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models: VPC}
+  \textcolor{blue}{\bf VPC: Verifying PRAM Consistency}
+
+  \begin{table}[!t]
+%   \renewcommand{\arraystretch}{1.1}
+  \resizebox{\textwidth}{!}{
+  \centering
+	\begin{tabular}{|c|c|c|}
+      \hline
+	  & \it (S)ingle variable  & \it (M)ultiple variables
+	  \\ \hline
+      \it write (D)uplicate values &
+      \innercell{c}{VPC-SD \\ (NPC) \textcolor{red}{$[\ast]$}} &
+      \innercell{c}{VPC-MD \\ (NPC) \textcolor{red}{$[\ast]$}}
+      \\ \hline
+      \it write (U)nique value &
+      \innercell{c}{VPC-SU \\ (P) \citeinbeamer{Golab}{PODC}{11}} &
+      \innercell{c}{VPC-MU \\ (P) \textcolor{red}{$[\ast]$}}
+      \\ \hline
+	\end{tabular}
+  }
+  \caption{A summary of complexity results for VPC problem
+  ($\textcolor{red}{[\ast]: \textrm{new results}}$).}
+  \end{table}
+
+%   \boxedpoint{Question: What about causal consistency?}
+\end{frame}
+%%%%%%%%%%%%
+%%%%%%%%%%%%
+\subsubsection{Quantifying Consistency Models}
+
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models}
+  \begin{definition}[Quantifying a consistency model]
+    \begin{itemize}
+      \setlength{\itemsep}{0.40cm}
+      \item $\mathcal{I}$nstance:
+		\begin{itemize}
+		  \item a \emph{read/write} execution $e$
+		  \item a consistency model $\mathcal{C}$
+		\end{itemize}
+      \item $\mathcal{P}$roblem:
+        \begin{itemize}
+		  \item How much does the execution $e$ (not) satisfy the consistency model
+		  $\mathcal{C}$? (\blockred{Beyond 0/1.})
+		\end{itemize}
+    \end{itemize}
+  \end{definition}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = quantify-main]{Quantifying consistency models}
+  \begin{block}{Quantifying consistency models from four perspectives
+  \citeinbeamer{Yu}{TOCS}{02}:}
+    \begin{enumerate}
+      \item data versions
+      \item randomness
+      \item timeliness \hyperlink{quantify-timeliness-backup}{\beamerbutton{Go
+      to Backup Slides for Timeliness}}
+      \item numerical values
+      \hyperlink{quantify-numerical-values-backup}{\beamerbutton{Go to Backup
+      Slides for Numerical Values}}
+    \end{enumerate}
+  \end{block}
+
+%   \boxedpoint{We discuss about both existing work and possible future work.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quantifying consistency models: data versions}
+  \fig{width = 0.85\textwidth}{fig/quantifying-data-version.pdf}
+  {Quantifying consistency models via data versions.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: data versions}
+    \begin{block}{Specification:}
+    definitions of $k$-safe, $k$-regular, and $k$-atomic
+      \citeinbeamer{Aiyer}{DISC}{05}, \citeinbeamer{Taubenfeld}{ICDCN}{13},
+      \citeinbeamer{Jagadeesan}{ICALP}{14}
+        \begin{itemize}
+          \item \texttt{reads} are allowed to return stale values
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Maintenance:}
+	  \begin{itemize}
+		\item $k$-quorum systems \citeinbeamer{Aiyer}{DISC}{05}
+	  \end{itemize}
+    \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: data versions}
+  \begin{block}{Computability power and limitations
+  \citeinbeamer{Taubenfeld}{ICDCN}{13}}
+
+    \begin{theorem}[]
+      $K \textrm{\it -safe registers } (k \geq 1)$ is computationally
+      equivalent to $1 \textrm{\it -atomic registers}$.
+    \end{theorem}
+
+    \begin{proof}
+      By \largeblue{simulations}.
+    \end{proof}
+
+    \begin{theorem}[]
+      SWMR $k$-safe registers can solve mutual exclusion (and $l$-exclusion).
+    \end{theorem}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quantifying consistency models: data versions}
+  \begin{alertblock}{Question: How to quantify weak consistency models?}
+    \begin{itemize}
+      \item being weak, no the same view of the order to agree on
+      \item metrics on partial orders
+      \item also apply to weak {\it transactional} semantics
+    \end{itemize}
+  \end{alertblock}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{comment}
+\begin{frame}{Quantifying consistency models: randomness}
+  \fig{width = 0.85\textwidth}{fig/quantifying-randomness.pdf}
+  {Quantifying consistency models via randomness.}
+\end{frame}
+\end{comment}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: randomness}
+  \begin{definition}[(Single-writer) random register
+  \citeinbeamer{Lee}{DC}{05}]
+    \begin{enumerate}
+      \item Random register: eventually each write stops being read from
+      \item $P$-random register
+      \item Monotone random register
+    \end{enumerate}
+  \end{definition}
+
+  \begin{block}{Maintenance:}
+    Using probabilistic quorum systems \citeinbeamer{Malkhi}{PODC}{97}.
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: randomness}
+  \begin{alertblock}{Question: What is the computability power of random
+  registers \citeinbeamer{Lee}{DC}{05}?}
+    \begin{itemize}
+      \item definition of multi-writer random registers
+      \item simulations
+      \item power (and limitations) of solving other problems
+    \end{itemize}
+  \end{alertblock}
+
+  \boxedpoint{One possible future work.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: randomness}
+  \begin{block}{Probabilistically Bounded Staleness (PBS)
+  \citeinbeamer{Bailis}{VLDB}{12} is a way to \largepurple{quantify} eventual
+  consistency:}
+%     Combing $k$-staleness with $t$-visibility, a \texttt{read} $r$ returns the
+%     data version $v$ with probability
+%
+%     \begin{align*}
+%       \mathbb{P} (v &\textrm{ is within the latest } \blue{k \textrm{
+%       versions}}
+%       \\
+%       	&\mid r \textrm{ begins } \blue{t \textrm{ units of time}} \textrm{ after
+%       	the previous } k \textrm{ versions commit}) \\
+%       	&\geq p_{k,t}.
+%     \end{align*}
+{\large
+  \begin{enumerate}
+    \item How eventual?
+    \item How consistent?
+  \end{enumerate}
+}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: randomness}
+  \begin{block}{Almost strong consistency:}
+    \begin{itemize}
+      \item deterministically \blockblue{bounded staleness}
+        \fig{width = 0.40\textwidth}{fig/2atomicity_case.pdf} {The case for
+        \texttt{read} operation \texttt{r} to get
+        \textcolor{blue}{\emph{2-stale}} value.}
+      \item \blockblue{probabilistically} quantifying the occurrence of
+      ``reading stale values"
+          \[
+		    \mathbb{P}(\texttt{2-atomicity}) = \mathbb{P} (\texttt{CP} \cap
+		    \texttt{ONI}) = \mathbb{P}(\texttt{CP}) \cdot \mathbb{P}(\texttt{ONI} \mid
+		    \texttt{CP}).
+		  \]
+    \end{itemize}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\subsubsection{Other Possible Directions}
+
+%%%%%%%%%%%%%
+\begin{frame}{Formal study of weak consistency models}
+  \begin{block}{Understanding eventual consistency}
+    \begin{enumerate}
+      \item Principles of Eventual Consistency \citeinbeamer{Burckhardt}{NOW
+    Publishers}{14}
+    \item Eventually Linearizable Shared Objects
+    \citeinbeamer{Serafini}{PODC}{10}
+    \end{enumerate}
+  \end{block}
+
+  \begin{block}{Data types for eventual consistency}
+    \begin{enumerate}
+      \item Replicated Data Types: Specification, Verification,
+      Optimality \citeinbeamer{Burckhardt}{POPL}{14}
+      \item Conflict-free Replicated Data Types \citeinbeamer{Shapiro}{SSS}{11}
+      \item Semantics of Eventually Consistent Replicated Sets
+      \citeinbeamer{Bieniusa}{DISC(BA)}{12}
+    \end{enumerate}
+  \end{block}
+%   version clock (vs. vector clock in Dynamo paper)
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Availability, Latency, and Progress}
+
+{\small
+  \begin{block}{Availability}
+  \begin{enumerate}
+    \item Minimal Replication Cost for Availability \citeinbeamer{Yu}{PODC}{02}
+%     \item Availability of Multi-object Operations \citeinbeamer{Yu}{NSDI}{06}
+    \item Availability in Globally Distributed Storage Systems
+    \citeinbeamer{Google}{OSDI}{10}
+%     \item Consistency, Availability, and Convergence \citeinbeamer{}{}{}
+  \end{enumerate}
+  \end{block}
+
+  \vspace{-0.2cm}
+  \begin{block}{Latency}
+    \begin{enumerate}
+      \item Consistency or Latency? A Quantitative Analysis of Replication
+      Systems Based on Replicated State Machines \citeinbeamer{Wang}{DSN}{13}
+      \item Refined Quorum Systems \citeinbeamer{Guerraoui}{PODC}{07}
+    \end{enumerate}
+  \end{block}
+
+  \vspace{-0.2cm}
+  \begin{block}{Progress}
+    \begin{enumerate}
+      \item Obstruction-Free Algorithms Can Be Practically
+      Wait-free {\tiny{\textcolor{blue}{[Fich@DISC'05]}}}
+      \item Are Lock-free Concurrent Algorithms Practically
+      Wait-free?
+      \citeinbeamer{Alistarh}{STOC}{14}
+    \end{enumerate}
+  \end{block}
+}
+\end{frame}
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+  \fig{width = 0.90\textwidth}{fig/survey-contents.pdf}{Contents of the survey
+  on consistency models in dsm.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[noframenumbering]
+  \begin{figure}[htp]
+	\centering
+	\includegraphics[width = 0.618\textwidth]{fig/thankyou.jpg}
+  \end{figure}
+\end{frame}
+%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \backupbegin
+\appendix
+
+%%%%%%%%%%%%%%%%%%
+\section{Appendix: Theory of Consistency Models}
+
+%%%%%%%%%%%%%
+\begin{frame}[label = atomicity-example-backup]{Atomicity as an example
+\hyperlink{consistency-model-with-main}{\beamerbutton{Consistency Models
+With Real-time Order}}}
+  \begin{mdframed}[linecolor = blue]
+    {\small Each operation appears to take effect instantaneously at some moment
+    between its \texttt{invocation} and \texttt{response}.}
+  \end{mdframed}
+
+  \fig{width = 0.55\textwidth}{fig/atomicity-execution-example.pdf}
+  {An atomic execution.}
+
+  \boxedpoint{Atomicity $\equiv$ \texttt{read} semantics + real-time order}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = sequential-example-backup]{Sequential consistency as
+an example \hyperlink{consistency-model-without-main}{\beamerbutton{Consistency
+Models Without Real-time Order}}}
+  \begin{mdframed}[linecolor = blue, align = center, leftmargin = 1cm,
+  rightmargin = 1cm]
+    {\small Each operation appears to take effect in program order.}
+  \end{mdframed}
+
+  \fig{width = 0.50\textwidth}{fig/sequential-consistency-example.pdf}
+  {A sequential (but not atomic) execution.}
+
+  \boxedpoint{Sequential consistency $\equiv$ \texttt{read} semantics +
+  program order}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = maintenance-backup]{Maintaining atomic registers
+\hyperlink{maintenance-main}{\beamerbutton{Back to Maintenance}}}
+  \begin{enumerate}
+    \item The ABD algorithm for \largepurple{single-writer} atomic registers
+    \citeinbeamer{ABD}{JACM}{95},
+  \citeinbeamer{Attiya}{EATCS}{10}
+		\begin{description}
+		  \item [Timestamps:] \timestamp{local counter} for the single writer
+		  \item [Quorum:] \texttt{read-write} overlapping $\Rightarrow$ ``old-new
+		  inversions''
+		    \begin{itemize}
+		      \item {\it reader} writes back + $\forall_{R_1, R_2 \in \mathcal{R}}:
+		      R_1 \cap R_2 \neq \emptyset$
+		    \end{itemize}
+		\end{description}
+
+	\vspace{0.30cm}
+
+    \item Algorithm for \largepurple{multi-writer} atomic registers
+    \citeinbeamer{Lynch}{FTCS}{97}
+      \begin{description}
+        \item[Timestamps:] \timestamp{(local counter, pid)} for all writers
+        \item[Quorum:] \texttt{write-write} overlapping $\Rightarrow$
+        \question{what?}
+		   \begin{itemize}
+		     \item {\it writer} reads before writing + $\forall_{R \in
+		     \mathcal{R}, W \in \mathcal{W}}: R \cap W \neq \emptyset$
+		   \end{itemize}
+      \end{description}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining safe registers}
+  \begin{enumerate}
+    \item Algorithm for \largepurple{single-writer} safe registers
+    \citeinbeamer{Lamport}{DC}{86}
+
+    \item Algorithm for \largepurple{multi-writer} safe registers
+    \scriptsize{\textcolor{blue}{[Not yet well-defined]}}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining regular registers}
+  \begin{enumerate}
+    \item Algorithm for \largepurple{single-writer} regular registers
+    \citeinbeamer{Lamport}{DC}{86}
+
+    \item Algorithm for \largepurple{multi-writer} regular registers
+    \citeinbeamer{Shao}{SIAM J. Comput.}{11}
+  \end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining sequential consistency}
+  \question{Quorum???}
+
+  Maintaining sequential consistency \citeinbeamer{Attiya}{TOCS}{94},
+  \citeinbeamer{Fekete}{JACM}{98}
+  \begin{description}
+    \item[Timestamps:] totally ordered broadcast
+    \item[Quorum:] \hfill
+      \begin{itemize}
+        \item local \texttt{read}: $|R \in \mathcal{R}| = 1, |W \in \mathcal{W}|
+        = n$
+        \item local \texttt{write}: $|R \in \mathcal{R}| = n, |W \in
+        \mathcal{W}| = 1$
+      \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining causal consistency}
+  Maintaining causal consistency \citeinbeamer{Ahamad}{DC}{95}
+  \begin{description}
+    \item[Timestamps:] vector clock based on the ``happened-before'' relation
+    \citeinbeamer{Lamport}{CACM}{78}
+    \item[Quorum:] \hfill
+      \begin{itemize}
+        \item local \texttt{read}: $|R \in \mathcal{R}| = 1, |W \in \mathcal{W}|
+        = n$
+      \end{itemize}
+  \end{description}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Maintaining PRAM consistency}
+  Maintaining PRAM consistency \citeinbeamer{Lipton}{TR}{88}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = impossibility-backup]{Let's move to the impossibility
+results \hyperlink{impossibility-lowerbounds-main}{\beamerbutton{Go to
+Impossibility Results}}}
+%   \fignocaption{width = 0.30\textwidth}{fig/impossibility-logo.jpg}
+%   \fignocaption{width = 0.35\textwidth}{fig/monument-valley-game-waterfall.jpg}
+  \fignocaption{width = 0.35\textwidth}{fig/escher-waterfall.jpg}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Impossibility results for atomic registers}
+  \begin{theorem}[\citeinbeamer{Attiya?}{Wiley}{04}]
+  It is impossible to simulate single-writer multi-reader, atomic register in
+  message passing if more than half replicas can crash ($f > \frac{n}{2}$).
+  \end{theorem}
+
+  \begin{proof}
+    By ``partition-merger''.
+  \end{proof}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Impossibility results for atomic registers}
+  \begin{theorem}[\citeinbeamer{Attiya}{TOCS}{94}]
+    It is impossible to have \largeblue{local} read or \largeblue{local} write
+    algorithms for atomicity as long as there is any \largeblue{uncertainty} in
+    the message delay.
+  \end{theorem}
+
+  \begin{proof}
+
+  \end{proof}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Impossibility results for atomic registers}
+  \begin{theorem}[\citeinbeamer{Dutta}{PODC}{04}]
+    It is impossible to obtain a \largeblue{fast} \footnote[frame]{Both
+    \texttt{\it reads} and \texttt{\it writes} complete in a \largeblue{single}
+    round-trip.} simulation of single-writer multi-reader, atomic register
+    tolerating $f < \frac{n}{2}$ replica crashes.
+  \end{theorem}
+
+  \begin{proof}
+	By ``block execution'' argument.
+  \end{proof}
+
+  \vspace{0.50cm}
+  \begin{theorem}[\citeinbeamer{Dutta}{PODC}{04}]
+    If any number of readers and writers may fail, no fast simulation of
+    multi-writer multi-reader, atomic registers can tolerate the failure of even
+    one replica.
+  \end{theorem}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Impossibility results for sequential consistency}
+  \begin{theorem}
+  \end{theorem}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{More impossibility results}
+  paper ``Possibility and Impossibility Results in a Shared Memory Environment''
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = lowerbounds-backup]{Let's move to the lower bounds
+\hyperlink{impossibility-lowerbounds-main}{\beamerbutton{Go to Lower Bounds}}}
+  \fignocaption{width = 0.30\textwidth}{fig/omega-lower-bounds.pdf}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Adding time to the system model}
+  \begin{block}{To obtain lower bounds on the time to perform
+  \texttt{reads/writes}:}
+	\begin{enumerate}
+	  \item local clocks run at the same rate; not initially synchronized
+	  \item message delay $\in [d-u, d]$
+	    \begin{itemize}
+	      \item $d$: upper bound
+	      \item $u$: uncertainty
+	    \end{itemize}
+	\end{enumerate}
+  \end{block}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Lower bounds}
+  \begin{theorem}
+    pram
+  \end{theorem}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Lower bounds}
+  \begin{theorem}[\citeinbeamer{Attiya}{TOCS}{94}]
+    For any sequentially consistent memory consistency system that provides two
+    \texttt{\it read/write} objects, $t_{\texttt{\it read}} + t_{\texttt{\it
+    write}} \geq d$.
+  \end{theorem}
+
+  \begin{theorem}[\citeinbeamer{Attiya}{TOCS}{94}]
+    In any linearizable implementation of an object, the worst-case time is
+    \begin{itemize}
+      \item $t_{\texttt{\it write}} \geq \frac{u}{2}$
+      \item $t_{\texttt{\it read}} \geq \frac{u}{4}$
+    \end{itemize}
+  \end{theorem}
+
+  \begin{proof}
+    By ``shifting''.
+  \end{proof}
+\end{frame}
+%%%%%%%%%%%%%%%%%%
+\section{Appendix: Practice of Consistency Models}
+
+\begin{frame}[label = eventual-consistency-backup]{Eventual consistency}
+  \begin{definition}[Formal definition of eventual consistency
+  \citeinbeamer{Serafini}{PODC}{10}]
+    \begin{description}
+      \item[Nontriviality:]
+      \item[Set stability:]
+      \item[Prefix consistency:]
+    \end{description}
+  \end{definition}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-eventual-consistency-backup]{Case study for
+eventual consistency}
+
+  Dynamo, Porcupine, Bayou, Project Voldemort
+
+  \hyperlink{case-study-amazon-main}{\beamerbutton{Go to Case Study of Dynamo at
+  Amazon}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Dynamo at Amazon}
+  \fig{width = 0.45\textwidth}{fig/dynamo-topology.pdf}{Topology: replicas of
+  keys in Dynamo ring without master.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Dynamo at Amazon}
+  \begin{block}{Configurable ``sloppy quorum'':}
+    \begin{itemize}
+      \item pessimistic: $(N, R, W) = (3,2,2)$ \fbox{in
+      \citeinbeamer{Amazon}{SOSP}{07}}
+      \item optimistic: $R = 1$, $W = 1$
+    \end{itemize}
+  \end{block}
+
+  \fig{width = 0.70\textwidth}{fig/dynamo-concurrency-control.pdf}{Concurrency
+  control: configurable sloppy quorum.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Dynamo at Amazon}
+  \begin{block}{Data versioning for conflict resolution:}
+    \begin{itemize}
+      \item \largepurple{no} specific operation orders to keep upon
+      \texttt{writes}
+      \item syntactic and semantic resolution (upon a \texttt{read})
+    \end{itemize}
+  \end{block}
+
+  \fig{scale = 0.50}{fig/dynamo-scheduling.pdf}{Syntatic and
+  semantic conflict resolution using vector clock \emph{(node, counter)}.}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-pnuts-backup]{Case study: PNUTS at Yahoo!}
+  record-level timeline consistency enforced through record mastership
+  \citeinbeamer{PNUTS}{Internet Computing}{12}
+
+  \hyperlink{case-study-pnuts-main}{\beamerbutton{Go to Case Study of PNUTS at
+  Yahoo!}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study of variants of eventual consistency}
+  Tao at Facebook:    ``read-after-write'': It is optimized heavily for reads, and explicitly
+favors efficiency and availability over consistency.
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-cops-backup]{Case study: COPS at Princeton}
+  \hyperlink{case-study-cops-main}{\beamerbutton{Go to Case Study of COPS at
+  Princeton}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-megastore-backup]{Case study: Megastore at
+Google}
+  \hyperlink{case-study-megastore-main}{\beamerbutton{Go to Case Study of
+  Megastore at Google}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Spanner at Google}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{}
+  Scalable consistency in scatter
+
+  Scalable, distributed data structures for internet service construction:
+  linearizable key-value store tolerant of churn.
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: Windows Azure at Microsoft}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Case study: ZooKeeper at Apache}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = case-study-chain-backup]{Case study: chain replication}
+
+  \citeinbeamer{Renesse}{OSDI}{04}
+  \hyperlink{design-elements-main}{\beamerbutton{Go to Design Elements}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = hybrid-consistency-backup]{Hybrid consistency models}
+  \hyperlink{consistency-models-and-design-elements-main}{\beamerbutton{Go to
+  Consistency Models and Design Elements}}
+
+  eventually serializable; eventually linearizable
+\end{frame}
+
+%%%%%%%%%%%%
+\section{Appendix: Gap between Theory and Practice}
+
+%%%%%%%%%%%%%
+\begin{frame}{Verifying consistency models}
+  \textcolor{blue}{\bf In the context of shared memory multiprocessor:}
+
+  \begin{table}
+	\begin{tabular}{|c|c|c|}
+      \hline
+      {\bf \large Consistency model} & {\bf \large Complexity} & {\bf \large
+      Ref.}
+      \\ \hline  \hline
+	\end{tabular}
+	\caption{An {\it incomplete} list of results on verifying consistency models in
+	the context of shared memory multiprocessor.}
+  \end{table}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = quantify-timeliness-backup]{Quantifying consistency
+models: timeliness}
+  \citeinbeamer{Rojas}{PODC}{99}
+  \hyperlink{quantify-main}{\beamerbutton{Go to Quantifying Consistency Models}}
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: timeliness}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}{Quantifying consistency models: timeliness}
+
+\end{frame}
+%%%%%%%%%%%%%
+\begin{frame}[label = quantify-numerical-values-backup]{Quantifying consistency
+models: numerical values}
+  \hyperlink{quantify-main}{\beamerbutton{Go to Quantifying Consistency Models}}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\end{document}
+

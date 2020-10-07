@@ -1,0 +1,131 @@
+\documentclass{article}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{footnote}
+
+\usepackage{array} % for table environment
+
+\title{verifying-consistency-models-table}
+\author{hengxin0912 Wei}
+\date{April 2015}
+
+% for cite: #1: author; #2: conference #3: year
+\newcommand{\citeinbeamer}[3]{{\scriptsize{\textcolor{blue}{[#1@#2'#3]}}}}
+
+\newcommand{\innercell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+
+\begin{document}
+
+  {\small \textcolor{blue}{\bf VSC: Verifying Sequential Consistency;}
+  \textcolor{blue}{\bf VL: Verifying Linearizability}}
+  
+  \begin{table}[h]
+    \centering
+%     \resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+      \hline
+      {\bf \large Variants} & {\bf \large VSC results} & {\bf \large VL results}
+      \\ \hline \hline
+	  general problem & \textsf{NP}-complete & \textsf{NP}-complete
+	  \\ \hline
+	  2 operations per process & \textsf{NP}-complete & w.l.o.g.
+	  \footnote[frame]{The complexity is not affected by the given restriction.}
+	  \\
+	  2 variables & \textsf{NP}-complete & w.l.o.g.\\
+	  3 processes & \textsf{NP}-complete & $O(n \log n)$
+	  \\ \hline
+	  read-mapping & \textsf{NP}-complete &  $O(n \log n)$ \\
+	  write-order & \textsf{NP}-complete &  $O(n \log n)$ \\
+	  \texttt{read\&write} only & \textsf{NP}-complete & \textsf{NP}-complete \\
+	  conflict-order & $O(n \log n)$ &  $O(n \log n)$
+	  \\ \hline
+	\end{tabular}
+% 	}
+	\caption{A summary of results on verifying sequential consistency ({\bf VSC})
+	and linearizability ({\bf VL}) \citeinbeamer{Gibbons}{SIAM J. Comput.}{97}.}
+  \end{table}
+  
+    {\small \textcolor{blue}{\bf VMC: Verifying Memory Coherence (a.k.a Cache
+  Consistency)}}
+
+  \begin{table}[h]
+	\centering
+	\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|c|c|c|}
+	\hline
+	 {\bf Variants} & {\bf \texttt{\bf Read/Write}} & {\bf \texttt{\bf
+	 Read-Modify-Write}}
+	 \\ \hline \hline
+	1 Operation/Process & $O(n \lg n)$ & $O(n^2)$ \\
+	2 Operations/Process & ? & \textsf{NP}-complete \\
+	3+ Operations/Process & \textsf{NP}-complete & \textsf{NP}-complete
+	\\ \hline
+	Constant $k$ Processes & $O(n^k)$ & $O(n^k)$
+	\\ \hline
+	1 Write/Value ({\it read-mapping}) & $O(n)$ & $O(n \lg n)$ \\
+	2 Writes/Value & \textsf{NP}-complete & ? \\
+	3+ Writes/Value & \textsf{NP}-complete & \textsf{NP}-complete
+	\\ \hline
+	Write-order Given & $O(n^2)$ & $O(n)$
+	\\ \hline
+	\end{tabular}
+	}
+	\caption{A summary of complexity results for verifying memory coherence ({\bf
+	VMC}) \citeinbeamer{Cantin}{SPAA}{03}, \citeinbeamer{Cantin}{TPDS}{05}.}
+  \end{table}
+  
+  {\small \textcolor{blue}{\bf Verifying Safety, Regularity, and Atomicity:}}
+  \begin{enumerate}
+    \item Variant: write unique value
+    \item Online: detect a consistency violation as soon as one happens
+  \end{enumerate}
+
+  \begin{table}[h]
+	\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	 & \textbf{Safety} & \textbf{Regularity}
+	 & \textbf{Atomicity} & \textbf{Sequential}
+	 \\ \hline  \hline
+	\begin{tabular}[c]{@{}c@{}}\textbf{Offline}\\
+	\citeinbeamer{Anderson}{HotDep}{10}\end{tabular}
+	 & $O(n^2)$ & $O(n^2)$ & $O(n^3)$ & {\it not studied}
+	 \\ \hline
+	\begin{tabular}[c]{@{}c@{}}\textbf{Online} \footnote[frame]{With some other
+	assumptions.}\\
+	\citeinbeamer{Golab}{PODC}{11} \end{tabular} & $O(n)$ & $O(n)$ & $O(n \log n)$ & $\textsf{Poly}(n)$
+	\\ \hline
+	\end{tabular}
+  \end{table}
+
+  $O(n \log n)$ for 2-atomicity verification \citeinbeamer{Golab}{ICDCS}{13}.
+  
+  \textcolor{blue}{\bf VPC: Verifying PRAM Consistency}
+
+  \begin{table}[!t]
+%   \renewcommand{\arraystretch}{1.1}
+  \resizebox{\textwidth}{!}{
+  \centering
+	\begin{tabular}{|c|c|c|}
+      \hline
+	  & \it (S)ingle variable  & \it (M)ultiple variables
+	  \\ \hline
+      \it write (D)uplicate values &
+      \innercell{c}{VPC-SD \\ (NPC) \textcolor{red}{$[\ast]$}} &
+      \innercell{c}{VPC-MD \\ (NPC) \textcolor{red}{$[\ast]$}}
+      \\ \hline
+      \it write (U)nique value &
+      \innercell{c}{VPC-SU \\ (P) \citeinbeamer{Golab}{PODC}{11}} &
+      \innercell{c}{VPC-MU \\ (P) \textcolor{red}{$[\ast]$}}
+      \\ \hline
+	\end{tabular}
+  }
+  \caption{A summary of complexity results for VPC problem
+  ($\textcolor{red}{[\ast]: \textrm{new results}}$).}
+  \end{table}
+
+  \begin{center}
+    \textcolor{red}{\bf Question: What about causal consistency?}
+  \end{center}
+  
+\end{document}
